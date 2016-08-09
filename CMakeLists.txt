@@ -1,0 +1,31 @@
+# Requirements.
+cmake_minimum_required(VERSION 2.6)
+
+set (PROJECT gameboy)
+
+# Project.
+project(${PROJECT})
+
+# Set up the output path.
+set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR})
+
+# Compiler flags.
+if (UNIX)
+  set(CMAKE_C_FLAGS "-g3 -Wall -Wextra -W" ${CMAKE_CXX_FLAGS})
+endif()
+
+# Generate list of source files.
+file (
+  GLOB_RECURSE
+  SRCS
+  "${CMAKE_SOURCE_DIR}/src/*.c"
+  )
+
+# Headers directories.
+set (HDRS "${CMAKE_SOURCE_DIR}/include/")
+
+# Headers.
+include_directories(${HDRS})
+
+# Executable.
+add_executable(${PROJECT} ${SRCS})
