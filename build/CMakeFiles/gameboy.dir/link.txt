@@ -1,1 +1,0 @@
-/bin/cc  -g3 -Wall -Wextra -W   CMakeFiles/gameboy.dir/src/cb_instructions.c.o CMakeFiles/gameboy.dir/src/cb_instructions_array.c.o CMakeFiles/gameboy.dir/src/instructions.c.o CMakeFiles/gameboy.dir/src/instructions_array.c.o CMakeFiles/gameboy.dir/src/main.c.o CMakeFiles/gameboy.dir/src/registers.c.o  -o ../gameboy -rdynamic 

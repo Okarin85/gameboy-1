@@ -1,7 +1,7 @@
 # Requirements.
 cmake_minimum_required(VERSION 2.6)
 
-set (PROJECT gameboy)
+set (PROJECT ege)
 
 # Project.
 project(${PROJECT})
