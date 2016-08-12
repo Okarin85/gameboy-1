@@ -264,4 +264,5 @@ void	instr_ret_z(t_gameboy *gameboy);
 void	instr_ret_nc(t_gameboy *gameboy);
 void	instr_ret_c(t_gameboy *gameboy);
 void	instr_reti(t_gameboy *gameboy);
+
 #endif /* !INSTRUCTION_H_ */

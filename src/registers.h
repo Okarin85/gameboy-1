@@ -3,7 +3,7 @@
 
 # include <stdbool.h>
 
-# define LITTLE_ENDIAN
+# define L_ENDIAN
 
 typedef struct			s_registers
 {
@@ -13,7 +13,7 @@ typedef struct			s_registers
 	{
 	  struct
 	    {
-# ifdef LITTLE_ENDIAN
+# ifdef L_ENDIAN
 	      unsigned char	f;
 	      unsigned char	a;
 # else
@@ -31,7 +31,7 @@ typedef struct			s_registers
 	{
 	  struct
 	    {
-# ifdef LITTLE_ENDIAN
+# ifdef L_ENDIAN
 	      unsigned char	c;
 	      unsigned char	b;
 # else
@@ -49,7 +49,7 @@ typedef struct			s_registers
 	{
 	  struct
 	    {
-# ifdef LITTLE_ENDIAN
+# ifdef L_ENDIAN
 	      unsigned char	e;
 	      unsigned char	d;
 # else
@@ -67,7 +67,7 @@ typedef struct			s_registers
 	{
 	  struct
 	    {
-# ifdef LITTLE_ENDIAN
+# ifdef L_ENDIAN
 	      unsigned char	l;
 	      unsigned char	h;
 # else
