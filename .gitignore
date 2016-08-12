@@ -1,7 +1,7 @@
 *~
 \#*\#
-./build
-./ege
+build
+ege
 
 # Vim temporary files
 *.swp
