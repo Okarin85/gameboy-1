@@ -1,13 +1,16 @@
 #include <stdlib.h>
 #include "gameboy.h"
 #include "errors.h"
+#include <string.h>
 
-static void	init_cardbridge(char *start, t_cardbridge *cb)
+static void	init_cardbridge(t_gameboy *gb)
 {
-  cb->rst_iv = start + RST_IV_INDEX;
-  cb->header = start + HEADER_INDEX;
-  cb->rom_bank_0 = start + ROM_BANK_0_INDEX;
-  cb->rom_banks = start + ROM_BANKS_INDEX;
+  gb->memory.cb.rst_iv = gb->memory.start + RST_IV_INDEX;
+  gb->memory.cb.header = gb->memory.start + HEADER_INDEX;
+  gb->memory.cb.rom_bank_0 = gb->memory.start + ROM_BANK_0_INDEX;
+  gb->memory.cb.rom_banks = gb->memory.start + ROM_BANKS_INDEX;
+
+  memcpy(gb->memory.start, gb->rom.start, 0x8000);
 }
 
 static void	init_vram(char *start, t_vram *vram)
@@ -26,12 +29,15 @@ static void	init_ram(char *start, t_ram *ram)
   ram->high = start + HIGH_RAM_INDEX;
 }
 
-int		init_memory(t_memory *memory)
+int		init_memory(t_gameboy *gb)
 {
-  if ((memory->start = malloc(MEMORY_SIZE)) == NULL)
+  if ((gb->memory.start = malloc(MEMORY_SIZE)) == NULL)
     return (perr(FUNC_ERR("malloc")));
-  init_cardbridge(memory->start, &memory->cb);
-  init_vram(memory->start, &memory->vram);
-  init_ram(memory->start, &memory->ram);
+  memset(&gb->memory.start, 0, MEMORY_SIZE);
+  init_cardbridge(gb);
+  init_vram(gb->memory.start, &gb->memory.vram);
+  init_ram(gb->memory.start, &gb->memory.ram);
+  gb->memory.io = (char *)IO_REGISTERS_INDEX;
+  gb->memory.interupt = (char *)INTERRUPT_ENABLE_INDEX;
   return (0);
 }
