@@ -7,8 +7,8 @@
 typedef struct s_gameboy	t_gameboy;
 
 enum			e_memory_map_indexes {
-    CARDBRIDGE_INDEX		= 0x0000,
-    RST_IV_INDEX		= CARDBRIDGE_INDEX,
+    CARTBRIDGE_INDEX		= 0x0000,
+    RST_IV_INDEX		= CARTBRIDGE_INDEX,
     HEADER_INDEX		= 0x0100,
     ROM_BANK_0_INDEX		= 0x0150,
     ROM_BANKS_INDEX		= 0x4000,
@@ -17,7 +17,7 @@ enum			e_memory_map_indexes {
     BG_MAP_1_INDEX		= 0x9800,
     BG_MAP_2_INDEX		= 0x9800,
     RAM_INDEX			= 0xA000,
-    CARDBRIDGE_RAM_INDEX	= RAM_INDEX,
+    CARTBRIDGE_RAM_INDEX	= RAM_INDEX,
     INTERNAL_RAM_INDEX		= 0xC000,
     ECHO_RAM_INDEX		= 0xE000,
     OAM_INDEX			= 0xFE00,
@@ -27,13 +27,13 @@ enum			e_memory_map_indexes {
 
 };
 
-typedef struct		s_cardbridge
+typedef struct		s_cartbridge
 {
   char			*rst_iv;
   char			*header;
   char			*rom_bank_0;
   char			*rom_banks;
-}			t_cardbridge;
+}			t_cartbridge;
 
 typedef struct		s_vram
 {
@@ -54,7 +54,7 @@ typedef struct		s_ram
 typedef struct		s_memory
 {
   char			*start;
-  t_cardbridge		cb;
+  t_cartbridge		cb;
   t_vram		vram;
   t_ram			ram;
   char			*io;

@@ -27,11 +27,11 @@ int		check_file_type(char const *name)
   if (stat(name, &buffer) == -1)
 #endif /* !WIN32 */
     {
-      perr("Can't load the cardbridge `%s` : %m.\n", name);
+      perr("Can't load the cartbridge `%s` : %m.\n", name);
       return (-1);
     }
   if (IS_REGULAR_FILE(buffer.st_mode))
     return (buffer.st_size);
-  perr("The cardbridge must be a regular file.\n", name);
+  perr("The cartbridge must be a regular file.\n", name);
   return (-1);
 }
