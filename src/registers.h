@@ -2,8 +2,7 @@
 # define REGISTERS_H_
 
 # include <stdbool.h>
-
-# define L_ENDIAN
+# include "memory.h"
 
 typedef struct			s_registers
 {
@@ -19,7 +18,7 @@ typedef struct			s_registers
 # else
 	      unsigned char	a;
 	      unsigned char	f;
-# endif
+# endif /* !L_ENDIAN */
 	    };
 	  unsigned short	af;
 	};
@@ -37,7 +36,7 @@ typedef struct			s_registers
 # else
 	      unsigned char	b;
 	      unsigned char	c;
-#endif
+#endif /* !L_ENDIAN */
 	    };
 	  unsigned short	bc;
 	};
@@ -55,7 +54,7 @@ typedef struct			s_registers
 # else
 	      unsigned char	d;
 	      unsigned char	e;
-# endif
+# endif /* !L_ENDIAN */
 	    };
 	  unsigned short	de;
 	};
@@ -73,7 +72,7 @@ typedef struct			s_registers
 # else
 	      unsigned char	h;
 	      unsigned char	l;
-# endif
+# endif /* !L_ENDIAN */
 	    };
 	  unsigned short	hl;
 	};

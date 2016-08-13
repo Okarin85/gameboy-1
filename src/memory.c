@@ -33,7 +33,7 @@ int		init_memory(t_gameboy *gb)
 {
   if ((gb->memory.start = malloc(MEMORY_SIZE)) == NULL)
     return (perr(FUNC_ERR("malloc")));
-  memset(&gb->memory.start, 0, MEMORY_SIZE);
+  memset(gb->memory.start, 0, MEMORY_SIZE);
   init_cardbridge(gb);
   init_vram(gb->memory.start, &gb->memory.vram);
   init_ram(gb->memory.start, &gb->memory.ram);

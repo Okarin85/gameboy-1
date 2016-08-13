@@ -7,17 +7,19 @@ typedef struct s_gameboy	t_gameboy;
 
 typedef struct		s_header
 {
-  char			nintendo[0x131];
+  char			*start;
+  char			nintendo[0x30];
   union
     {
       struct
 	{
-	  char			unused2[15];
+	  char			unused2[11];
+	  char			manufacturer_code[4];
 	  char			cbg_flag;
 	};
       char			title[16];
     };
-  char			new_licensee_code[2];
+  short			new_licensee_code;
   char			sgb_flag;
   char			cart_type;
   char			cart_rom_size;
@@ -25,8 +27,8 @@ typedef struct		s_header
   char			destination_code;
   char			old_licensee_code;
   char			mask_rom_version;
-  char			checksum;
-  char			global_checksum[2];
+  unsigned char		header_checksum;
+  short			global_checksum;
 }			t_header;
 
 enum			e_cartbridge_type

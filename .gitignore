@@ -2,6 +2,7 @@
 \#*\#
 build
 ege
+test_roms
 
 # Vim temporary files
 *.swp
@@ -44,3 +45,4 @@ ege
 *.dSYM/
 .gdb_history
 vgcore.*
+peda-*

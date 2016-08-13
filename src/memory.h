@@ -2,6 +2,7 @@
 # define MEMORY_H_
 
 # define MEMORY_SIZE	0x10000
+# define L_ENDIAN
 
 typedef struct s_gameboy	t_gameboy;
 
