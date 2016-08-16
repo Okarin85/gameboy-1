@@ -82,6 +82,53 @@ typedef struct			s_registers
   unsigned short		pc;
 }				t_registers;
 
+typedef struct		s_hardware_registers
+{
+  char			*p1;
+  char			*sb;
+  char			*sc;
+  char			*div;
+  char			*tima;
+  char			*tma;
+  char			*tac;
+  char			*_if;
+  char			*nr10;
+  char			*nr11;
+  char			*nr12;
+  char			*nr13;
+  char			*nr14;
+  char			*nr21;
+  char			*nr22;
+  char			*nr23;
+  char			*nr24;
+  char			*nr30;
+  char			*nr31;
+  char			*nr32;
+  char			*nr33;
+  char			*nr34;
+  char			*nr41;
+  char			*nr42;
+  char			*nr43;
+  char			*nr44;
+  char			*nr50;
+  char			*nr51;
+  char			*nr52;
+  char			*wpr;
+  char			*lcdc;
+  char			*stat;
+  char			*scy;
+  char			*scx;
+  char			*ly;
+  char			*lyc;
+  char			*dma;
+  char			*bgp;
+  char			*obp0;
+  char			*obp1;
+  char			*wy;
+  char			*wx;
+  char			*ie;
+}			t_hardware_registers;
+
 enum			e_flags
 {
   CARRY_FLAG = 4,
@@ -116,5 +163,8 @@ flag_unsetter(carry_flag, CARRY_FLAG)
 flag_unsetter(half_carry_flag, HALF_CARRY_FLAG)
 flag_unsetter(substract_flag, SUBSTRACT_FLAG)
 flag_unsetter(zero_flag, ZERO_FLAG)
+
+void			init_hardware_registers(t_gameboy *gb);
+void			init_registers(t_gameboy *gb);
 
 #endif /* !REGISTERS_H_ */

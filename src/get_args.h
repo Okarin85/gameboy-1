@@ -3,7 +3,7 @@
 
 # define NB_ARGS	2
 
-# define USAGE		"Usage: %s rom_file"
+# define USAGE		"Usage: %s rom_file\n"
 
 int		get_args(int argc, char **argv, t_gameboy *gb);
 

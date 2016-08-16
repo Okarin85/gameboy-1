@@ -1,10 +1,5 @@
 #include "gameboy.h"
 
-char		fetch_byte(void const *address)
-{
-  return (*((char *)address));
-}
-
 short		inverted_fetch_word(void const *address)
 {
 #ifdef L_ENDIAN

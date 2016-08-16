@@ -5,7 +5,6 @@
 # include "rom.h"
 # include "memory.h"
 
-
 typedef struct		s_file
 {
   char const		*name;
@@ -17,6 +16,7 @@ typedef struct		s_gameboy
   t_file		file;
   t_memory		memory;
   t_registers		registers;
+  t_hardware_registers	hregisters;
   t_rom			rom;
   unsigned		ticks;
 }			t_gameboy;
