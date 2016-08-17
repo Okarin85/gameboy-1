@@ -1,4 +1,4 @@
-#include "fetch.h"
+#include "memory_rw.h"
 #include "gameboy.h"
 
 static void		init_hardware_registers_values(t_gameboy *gb)
@@ -109,3 +109,60 @@ void			init_registers(t_gameboy *gb)
   gb->registers.de	= 0x00D8;
   gb->registers.hl	= 0x014D;
 }
+
+void			set_if_carry(t_registers *registers, unsigned char a, unsigned char b, unsigned char res)
+{
+  if ((IS_NEG(a) & IS_NEG(b)) | (IS_NEG(a) & IS_POS(res)) | (IS_NEG(b) & IS_POS(res)))
+    set_carry_flag(registers);
+  else
+    unset_carry_flag(registers);
+}
+
+void			set_if_zero(t_registers *registers, unsigned char value)
+{
+  if (value)
+    set_zero_flag(registers);
+  else
+    unset_zero_flag(registers);
+}
+
+void			set_if_half_carry(t_registers *registers, unsigned char a, unsigned char b)
+{
+  if (((a & 0xF) + (b & 0xF)) & 0x10)
+    set_half_carry_flag(registers);
+  else
+    unset_half_carry_flag(registers);
+}
+
+void			set_if_no_borrow_carry(t_registers *registers, unsigned char a, unsigned char b)
+{
+  if (a < b)
+    set_carry_flag(registers);
+  else
+    unset_carry_flag(registers);
+}
+
+void			set_if_no_borrow_half_carry(t_registers *registers, unsigned char a, unsigned char b)
+{
+  if ((a & 0x0F) < (b & 0x0F))
+    set_half_carry_flag(registers);
+  else
+    unset_half_carry_flag(registers);
+}
+
+void			set_if_half_carry_bit11(t_registers *registers, unsigned short a, unsigned short b)
+{
+  if (((a & 0xFFF) + (b & 0xFFF)) & 0x1000)
+    set_half_carry_flag(registers);
+  else
+    unset_half_carry_flag(registers);
+}
+
+void			set_if_carry_bit15(t_registers *registers, unsigned short a, unsigned short b, unsigned short res)
+{
+  if ((IS_NEG(a) & IS_NEG(b)) | (IS_NEG(a) & IS_POS(res)) | (IS_NEG(b) & IS_POS(res)))
+    set_carry_flag(registers);
+  else
+    unset_carry_flag(registers);
+}
+

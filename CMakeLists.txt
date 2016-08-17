@@ -10,10 +10,10 @@ project(${PROJECT})
 set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR})
 
 # Compiler flags.
-set(CMAKE_C_FLAGS "-std=c11" ${CMAKE_C_FLAGS})
+set(CMAKE_C_FLAGS "-std=c11 ${CMAKE_C_FLAGS}")
 
 if (UNIX)
-  set(CMAKE_C_FLAGS "-g3 -Wall -Wextra -W" ${CMAKE_C_FLAGS})
+  set(CMAKE_C_FLAGS "-g3 -Wall -Wextra -W  ${CMAKE_C_FLAGS}")
 endif()
 
 # Generate list of source files.

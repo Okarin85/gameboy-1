@@ -3,12 +3,10 @@
 #include <stdlib.h>
 #include "errors.h"
 #include "gameboy.h"
-#include "fetch.h"
+#include "memory_rw.h"
 #include "rom.h"
 #include "utils.h"
 #include "infos.h"
-
-extern inline char	fetch_byte(void const *address);
 
 t_assoc_array const	g_cb_types[NB_CB_TYPES] = {
       {0x00, "ROM ONLY"},
@@ -75,7 +73,7 @@ static FILE	*check_and_open_file(t_gameboy *gb)
     return (NULL);
   else if (gb->file.size < MIN_ROM_SIZE)
     {
-      perr("The rom is too small.");
+      perr("Invalid rom: file too short !\n");
       return (NULL);
     }
   else if ((fs = fopen(gb->file.name, "r")) == NULL)

@@ -3,5 +3,8 @@
 
 int		init_gameboy(t_gameboy *gb)
 {
-  return (load_rom(gb) || init_memory(gb));
+  if (load_rom(gb) || init_memory(gb))
+    return (1);
+  init_registers(gb);
+  return (0);
 }

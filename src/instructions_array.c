@@ -81,8 +81,8 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x36] = {"LD (HL), d8",		&instr_ld_hl_d8,	2,	12},
 
     // LD A, n : put value n into A.
-    [0x0A] = {"LD A, (BC)",		&instr_ld_a_bc,		1,	8},
-    [0x1A] = {"LD A, (DE)",		&instr_ld_a_de,		1,	8},
+    [0x0A] = {"LD A, (BC)",		&instr_ld_a_bcp,	1,	8},
+    [0x1A] = {"LD A, (DE)",		&instr_ld_a_dep,	1,	8},
     [0xFA] = {"LD A, (a16)",		&instr_ld_a_a16,	3,	16},
     [0x3E] = {"LD A, (d8)",		&instr_ld_a_d8,		2,	8},
 
@@ -93,35 +93,35 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x5F] = {"LD E, A",		&instr_ld_e_a,		1,	4},
     [0x67] = {"LD H, A",		&instr_ld_h_a,		1,	4},
     [0x6F] = {"LD L, A",		&instr_ld_l_a,		1,	4},
-    [0x02] = {"LD (BC), A",		&instr_ld_bc_a,		1,	8},
-    [0x12] = {"LD (DE), A",		&instr_ld_de_a,		1,	8},
-    [0x77] = {"LD (HL), A",		&instr_ld_hl_a,		1,	8},
+    [0x02] = {"LD (BC), A",		&instr_ld_bcp_a,	1,	8},
+    [0x12] = {"LD (DE), A",		&instr_ld_dep_a,	1,	8},
+    [0x77] = {"LD (HL), A",		&instr_ld_hlp_a,	1,	8},
     [0xEA] = {"LD (a16), A",		&instr_ld_a16_a,	3,	16},
 
     // LD A, (C) : put value at address $FF00 + register C into A.
     // Same as : LD A, ($FF00 + C)
-    [0xF2] = {"LD A, (C)",		&instr_ld_a_c_ff00,	2,	8},
+    [0xF2] = {"LD A, (C)",		&instr_ld_a_cp_ff00,	2,	8},
 
     // LD (C), A : put A into address $FF00 + register C.
-    [0xE2] = {"LD (C), A",		&instr_ld_c_a_ff00,	2,	8},
+    [0xE2] = {"LD (C), A",		&instr_ld_cp_a_ff00,	2,	8},
 
     // LDD A, (HL) : put value at address HL into A. Decrement HL.
-    [0x3A] = {"LD A, (HL-) | LD A, (HLD) | LDD A, (HL)",		&instr_ldd_a_hl,	1,	8},
+    [0x3A] = {"LD A, (HL-) | LD A, (HLD) | LDD A, (HL)",		&instr_ldd_a_hlp,	1,	8},
 
     // LDD (HL), A : put A into memory address HL. Decrement HL.
-    [0x32] = {"LD (HL-), A | LD (HLD), A | LDD (HL), A",		&instr_ldd_hl_a,	1,	8},
+    [0x32] = {"LD (HL-), A | LD (HLD), A | LDD (HL), A",		&instr_ldd_hlp_a,	1,	8},
 
     // LDI A, (HL) : put value at address HL into A. Increment HL.
-    [0x2A] = {"LD A, (HL-) | LD A, (HLD) | LDI A, (HL)",		&instr_ldi_a_hl,	1,	8},
+    [0x2A] = {"LD A, (HL-) | LD A, (HLD) | LDI A, (HL)",		&instr_ldi_a_hlp,	1,	8},
 
     // LDI (HL), A : put A into memory address HL. Increment HL.
-    [0x22] = {"LD (HL-), A | LD (HLD), A | LDI (HL), A",		&instr_ldi_hl_a,	1,	8},
+    [0x22] = {"LD (HL-), A | LD (HLD), A | LDI (HL), A",		&instr_ldi_hlp_a,	1,	8},
 
     // LDH (d8), A : put A into memory address $FF00 + d8.
-    [0xE0] = {"LDH (d8), A | LD ($FF00 + d8), A",			&instr_ldh_n_a,		2,	12},
+    [0xE0] = {"LDH (d8), A | LD ($FF00 + d8), A",			&instr_ldh_d8_a,	2,	12},
 
     // LDH A, (d8) : put memory address $FF00 + d8 into A.
-    [0xF0] = {"LDH A, (d8) | LD A, ($FF00 + d8)",			&instr_ldh_a_n,		2,	12},
+    [0xF0] = {"LDH A, (d8) | LD A, ($FF00 + d8)",			&instr_ldh_a_d8,	2,	12},
 
     /*
     **                              16-BIT LOADS
@@ -131,11 +131,11 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     // LD r, d16 : put value d16 into r.
     [0x01] = {"LD BC, d16",		&instr_ld_bc_d16,	3,	12},
     [0x11] = {"LD DE, d16",		&instr_ld_de_d16,	3,	12},
-    [0x21] = {"LD HL, d16",		&instr_hl_de_d16,	3,	12},
-    [0x31] = {"LD SP, d16",		&instr_hl_sp_d16,	3,	12},
+    [0x21] = {"LD HL, d16",		&instr_ld_hl_d16,	3,	12},
+    [0x31] = {"LD SP, d16",		&instr_ld_sp_d16,	3,	12},
 
     // LD SP, HL : put HL into SP.
-    [0xF9] = {"LD SP, HL",		&instr_hl_sp_hl,	1,	8},
+    [0xF9] = {"LD SP, HL",		&instr_ld_sp_hl,	1,	8},
 
     // LDHL SP, d8 : put SP + d8 effective address into HL.
     [0xF8] = {"LDHL SP, d8",		&instr_ldhl_sp_d8,	2,	12},
@@ -143,13 +143,13 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     // LD d16, SP : put SP at address d16.
     [0x08] = {"LD (d16), SP",		&instr_ld_d16_sp,	3,	20},
 
-    // PUSH rr : push register pair rr onto stack. Decrement SP tw	ce.
+    // PUSH rr : push register pair rr onto stack. Decrement SP twice.
     [0xF5] = {"PUSH AF",		&instr_push_af,		1,	16},
     [0xC5] = {"PUSH BC",		&instr_push_bc,		1,	16},
     [0xD5] = {"PUSH DE",		&instr_push_de,		1,	16},
     [0xE5] = {"PUSH HL",		&instr_push_hl,		1,	16},
 
-    // POP r : pop two bytes off stack into register pair r. Incre	ent SP twice.
+    // POP r : pop two bytes off stack into register pair r. Increment SP twice.
     [0xF1] = {"POP AF",			&instr_pop_af,		1,	12},
     [0xC1] = {"POP BC",			&instr_pop_bc,		1,	12},
     [0xD1] = {"POP DE",			&instr_pop_de,		1,	12},
@@ -168,7 +168,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x83] = {"ADD A, E",		&instr_add_a_e,		1,	4},
     [0x84] = {"ADD A, H",		&instr_add_a_h,		1,	4},
     [0x85] = {"ADD A, L",		&instr_add_a_l,		1,	4},
-    [0x86] = {"ADD A, (HL)",		&instr_add_a_hl,	1,	8},
+    [0x86] = {"ADD A, (HL)",		&instr_add_a_hlp,	1,	8},
     [0xC6] = {"ADD A, d8",		&instr_add_a_d8,	2,	8},
 
     // ADC A, r : add r + Carry flag to A.
@@ -179,7 +179,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x8B] = {"ADC A, E",		&instr_adc_a_e,		1,	4},
     [0x8C] = {"ADC A, H",		&instr_adc_a_h,		1,	4},
     [0x8D] = {"ADC A, L",		&instr_adc_a_l,		1,	4},
-    [0x8E] = {"ADC A, (HL)",		&instr_adc_a_hl,	1,	8},
+    [0x8E] = {"ADC A, (HL)",		&instr_adc_a_hlp,	1,	8},
     [0xCE] = {"ADC A, d8",		&instr_adc_a_d8,	2,	8},
 
     // SUB r : substract r to A.
@@ -190,7 +190,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x93] = {"SUB A, E",		&instr_sub_a_e,		1,	4},
     [0x94] = {"SUB A, H",		&instr_sub_a_h,		1,	4},
     [0x95] = {"SUB A, L",		&instr_sub_a_l,		1,	4},
-    [0x96] = {"SUB A, (HL)",		&instr_sub_a_hl,	1,	8},
+    [0x96] = {"SUB A, (HL)",		&instr_sub_a_hlp,	1,	8},
     [0xD6] = {"SUB A, d8",		&instr_sub_a_d8,	2,	8},
 
     // SBC A, r : substract r + Carry flag from A.
@@ -201,7 +201,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x9B] = {"SBC A, E",		&instr_sbc_a_e,		1,	4},
     [0x9C] = {"SBC A, H",		&instr_sbc_a_h,		1,	4},
     [0x9D] = {"SBC A, L",		&instr_sbc_a_l,		1,	4},
-    [0x9E] = {"SBC A, (HL)",		&instr_sbc_a_hl,	1,	8},
+    [0x9E] = {"SBC A, (HL)",		&instr_sbc_a_hlp,	1,	8},
     [0xDE] = {"SBC A, d8",		&instr_sbc_a_d8,	2,	8}, // ATTENTION, indefini dans le GameBoy CPU Manual
 
     // AND r : logically AND r with A, result in A.
@@ -212,7 +212,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0xA3] = {"AND A, E",		&instr_and_a_e,		1,	4},
     [0xA4] = {"AND A, H",		&instr_and_a_h,		1,	4},
     [0xA5] = {"AND A, L",		&instr_and_a_l,		1,	4},
-    [0xA6] = {"AND A, (HL)",		&instr_and_a_hl,	1,	8},
+    [0xA6] = {"AND A, (HL)",		&instr_and_a_hlp,	1,	8},
     [0xE6] = {"AND A, d8",		&instr_and_a_d8,	2,	8},
 
     // OR r : logical OR r with A, result in A.
@@ -223,7 +223,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0xB3] = {"OR A, E",		&instr_or_a_e,		1,	4},
     [0xB4] = {"OR A, H",		&instr_or_a_h,		1,	4},
     [0xB5] = {"OR A, L",		&instr_or_a_l,		1,	4},
-    [0xB6] = {"OR A, (HL)",		&instr_or_a_hl,		1,	8},
+    [0xB6] = {"OR A, (HL)",		&instr_or_a_hlp,		1,	8},
     [0xF6] = {"OR A, d8",		&instr_or_a_d8,		2,	8},
 
     // XOR r : logical XOR r with A, result in A.
@@ -234,7 +234,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0xAB] = {"XOR A, E",		&instr_xor_a_e,		1,	4},
     [0xAC] = {"XOR A, H",		&instr_xor_a_h,		1,	4},
     [0xAD] = {"XOR A, L",		&instr_xor_a_l,		1,	4},
-    [0xAE] = {"XOR A, (HL)",		&instr_xor_a_hl,	1,	8},
+    [0xAE] = {"XOR A, (HL)",		&instr_xor_a_hlp,	1,	8},
     [0xEE] = {"XOR A, d8",		&instr_xor_a_d8,	2,	8},
 
     // CP r : compare A with n. This is A - r.
@@ -245,7 +245,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0xBB] = {"CP A, E",		&instr_cp_a_e,		1,	4},
     [0xBC] = {"CP A, H",		&instr_cp_a_h,		1,	4},
     [0xBD] = {"CP A, L",		&instr_cp_a_l,		1,	4},
-    [0xBE] = {"CP A, (HL)",		&instr_cp_a_hl,		1,	8},
+    [0xBE] = {"CP A, (HL)",		&instr_cp_a_hlp,	1,	8},
     [0xFE] = {"CP A, d8",		&instr_cp_a_d8,		2,	8},
 
     // INC r : decrement register n.
@@ -256,7 +256,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x1C] = {"INC A, E",		&instr_inc_a_e,		1,	4},
     [0x24] = {"INC A, H",		&instr_inc_a_h,		1,	4},
     [0x2C] = {"INC A, L",		&instr_inc_a_l,		1,	4},
-    [0x34] = {"INC A, (HL)",		&instr_inc_a_hl,	1,	12},
+    [0x34] = {"INC A, (HL)",		&instr_inc_a_hlp,	1,	12},
 
     // DEC r : decrement register n.
     [0x3D] = {"DEC A, A",		&instr_dec_a_a,		1,	4},
@@ -266,7 +266,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x1D] = {"DEC A, E",		&instr_dec_a_e,		1,	4},
     [0x25] = {"DEC A, H",		&instr_dec_a_h,		1,	4},
     [0x2D] = {"DEC A, L",		&instr_dec_a_l,		1,	4},
-    [0x35] = {"DEC A, (HL)",		&instr_dec_a_hl,	1,	12},
+    [0x35] = {"DEC A, (HL)",		&instr_dec_a_hlp,	1,	12},
 
     /*
     **                           16-BIT ARITHMETIC
@@ -439,5 +439,8 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     // RETI : pop two bytes from stack & jump
     // to that address then enable interrupts.
     [0xD9] = {"RETI",			&instr_reti,		1,	8},
+
+    // PREFIX CB
+    [0xCB] = {"PREFIX CB",		&instr_prefix_cb,	1,	4},
 
 };
