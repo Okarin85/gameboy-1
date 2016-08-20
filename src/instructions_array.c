@@ -96,7 +96,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x02] = {"LD (BC), A",		&instr_ld_bcp_a,	0,	8},
     [0x12] = {"LD (DE), A",		&instr_ld_dep_a,	0,	8},
     [0x77] = {"LD (HL), A",		&instr_ld_hlp_a,	0,	8},
-    [0xEA] = {"LD (a16), A",		&instr_ld_a16_a,	2,	16},
+    [0xEA] = {"LD ([0x%04X]), A",	&instr_ld_a16_a,	2,	16},
 
     // LD A, (C) : put value at address $FF00 + register C into A.
     // Same as : LD A, ($FF00 + C)
@@ -129,10 +129,10 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     */
 
     // LD r, d16 : put value d16 into r.
-    [0x01] = {"LD BC, d16",		&instr_ld_bc_d16,	2,	12},
-    [0x11] = {"LD DE, d16",		&instr_ld_de_d16,	2,	12},
-    [0x21] = {"LD HL, d16",		&instr_ld_hl_d16,	2,	12},
-    [0x31] = {"LD SP, d16",		&instr_ld_sp_d16,	2,	12},
+    [0x01] = {"LD BC, [0x%04X]",	&instr_ld_bc_d16,	2,	12},
+    [0x11] = {"LD DE, [0x%04X]",	&instr_ld_de_d16,	2,	12},
+    [0x21] = {"LD HL, [0x%04X]",	&instr_ld_hl_d16,	2,	12},
+    [0x31] = {"LD SP, [0x%04X]",	&instr_ld_sp_d16,	2,	12},
 
     // LD SP, HL : put HL into SP.
     [0xF9] = {"LD SP, HL",		&instr_ld_sp_hl,	0,	8},

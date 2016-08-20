@@ -27,6 +27,7 @@ void				cpu_step(t_gameboy *gb)
   gb->registers.pc += 1;
   get_operand(gb, opcode);
   ++instr_number;
+  print_registers(gb);
   if (g_instructions[opcode].nb_cycles != 0)
     {
       print_instruction_infos(gb, opcode);

@@ -55,7 +55,6 @@ void		print_header_infos(t_header *header)
 
 void		print_instruction_infos(t_gameboy *gb, unsigned char opcode)
 {
-  printf("Pc: 0x%04X\n", gb->registers.pc);
   if (g_instructions[opcode].instr_length == 0)
     printf("%s", g_instructions[opcode].debug);
   else if (g_instructions[opcode].instr_length == 1)
@@ -63,4 +62,21 @@ void		print_instruction_infos(t_gameboy *gb, unsigned char opcode)
   else
     printf(g_instructions[opcode].debug, gb->operand.len16);
   printf("\n_________________________\n\n");
+}
+
+void		print_registers(t_gameboy *gb)
+{
+  printf("AF = 0x%04X | A = 0x%02X | F = 0x%02X (Z = %u; S = %u; HF = %u; C = %u)\n",
+	 gb->registers.af, gb->registers.a, gb->registers.f,
+	 get_zero_flag(gb->registers.f), get_substract_flag(gb->registers.f),
+	 get_half_carry_flag(gb->registers.f), get_carry_flag(gb->registers.f));
+  printf("BC = 0x%04X | B = 0x%02X | C = 0x%02X\n",
+	 gb->registers.bc, gb->registers.b, gb->registers.c);
+  printf("DE = 0x%04X | D = 0x%02X | E = 0x%02X\n",
+	 gb->registers.de, gb->registers.d, gb->registers.e);
+  printf("HL = 0x%04X | H = 0x%02X | L = 0x%02X\n",
+	 gb->registers.hl, gb->registers.h, gb->registers.l);
+  printf("SP = 0x%04X\n", gb->registers.sp);
+  printf("PC = 0x%04X\n", gb->registers.pc);
+  printf("_________________________\n\n");
 }
