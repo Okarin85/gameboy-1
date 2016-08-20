@@ -1,6 +1,8 @@
 #include <string.h>
 #include <stdio.h>
+#include "gameboy.h"
 #include "rom.h"
+#include "instructions.h"
 #include "infos.h"
 
 static void	print_cartbridge_type(unsigned char ct)
@@ -10,8 +12,7 @@ static void	print_cartbridge_type(unsigned char ct)
       if (g_cb_types[i].key == ct)
 	{
 	  printf("Cartbridge type: %s\n", g_cb_types[i].value);
-	  return ;
-	}
+	  return ; }
     }
 }
 
@@ -49,4 +50,17 @@ void		print_header_infos(t_header *header)
   print_cartbridge_type(header->cart_type);
   print_rom_size(header->cart_rom_size);
   print_ram_size(header->cart_ram_size);
+  printf("_________________________\n\n");
+}
+
+void		print_instruction_infos(t_gameboy *gb, unsigned char opcode)
+{
+  printf("Pc: 0x%04X\n", gb->registers.pc);
+  if (g_instructions[opcode].instr_length == 0)
+    printf("%s", g_instructions[opcode].debug);
+  else if (g_instructions[opcode].instr_length == 1)
+    printf(g_instructions[opcode].debug, gb->operand.len8);
+  else
+    printf(g_instructions[opcode].debug, gb->operand.len16);
+  printf("\n_________________________\n\n");
 }

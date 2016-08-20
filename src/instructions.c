@@ -1,4 +1,6 @@
 #include "memory_rw.h"
+#include "instructions.h"
+#include "cb_instructions.h"
 #include "gameboy.h"
 
 /*
@@ -9,32 +11,32 @@
 // lD nn, d8 : put value nn into d8.
 void	instr_ld_b_d8(t_gameboy *gb)
 {
-  gb->registers.b = fetch_byte(gb->memory.start + gb->registers.pc);
+  gb->registers.b = gb->operand.len8;
 }
 
 void	instr_ld_c_d8(t_gameboy *gb)
 {
-  gb->registers.c = fetch_byte(gb->memory.start + gb->registers.pc);
+  gb->registers.c = gb->operand.len8;
 }
 
 void	instr_ld_d_d8(t_gameboy *gb)
 {
-  gb->registers.d = fetch_byte(gb->memory.start + gb->registers.pc);
+  gb->registers.d = gb->operand.len8;
 }
 
 void	instr_ld_e_d8(t_gameboy *gb)
 {
-  gb->registers.e = fetch_byte(gb->memory.start + gb->registers.pc);
+  gb->registers.e = gb->operand.len8;
 }
 
 void	instr_ld_h_d8(t_gameboy *gb)
 {
-  gb->registers.h = fetch_byte(gb->memory.start + gb->registers.pc);
+  gb->registers.h = gb->operand.len8;
 }
 
 void	instr_ld_l_d8(t_gameboy *gb)
 {
-  gb->registers.l = fetch_byte(gb->memory.start + gb->registers.pc);
+  gb->registers.l = gb->operand.len8;
 }
 
 // LD r1, r2 : put value r2 into r1.
@@ -320,7 +322,7 @@ void	instr_ld_hl_l(t_gameboy *gb)
 
 void	instr_ld_hl_d8(t_gameboy *gb)
 {
-  write_byte(gb->memory.start + gb->registers.hl, fetch_byte(gb->memory.start + gb->registers.pc));
+  write_byte(gb->memory.start + gb->registers.hl, gb->operand.len8);
 }
 
 void	instr_ld_a_bcp(t_gameboy *gb)
@@ -335,12 +337,12 @@ void	instr_ld_a_dep(t_gameboy *gb)
 
 void	instr_ld_a_a16(t_gameboy *gb)
 {
-  gb->registers.a = fetch_byte(gb->memory.start + fetch_word(gb->memory.start + gb->registers.pc));
+  gb->registers.a = fetch_byte(gb->memory.start + gb->operand.len16);
 }
 
 void	instr_ld_a_d8(t_gameboy *gb)
 {
-  gb->registers.a = fetch_byte(gb->memory.start + gb->registers.pc);
+  gb->registers.a = gb->operand.len8;
 }
 
 void	instr_ld_b_a(t_gameboy *gb)
@@ -390,7 +392,7 @@ void	instr_ld_hlp_a(t_gameboy *gb)
 
 void	instr_ld_a16_a(t_gameboy *gb)
 {
-  write_byte(gb->memory.start + fetch_word(gb->memory.start + gb->registers.pc), gb->registers.a);
+  write_byte(gb->memory.start + gb->operand.len16, gb->registers.a);
 }
 
 void	instr_ld_a_cp_ff00(t_gameboy *gb)
@@ -429,32 +431,32 @@ void	instr_ldi_hlp_a(t_gameboy *gb)
 
 void	instr_ldh_d8_a(t_gameboy *gb)
 {
-  write_byte(gb->memory.start + 0xFF00 + fetch_byte(gb->memory.start + gb->registers.pc), gb->registers.a);
+  write_byte(gb->memory.start + 0xFF00 + gb->operand.len8, gb->registers.a);
 }
 
 void	instr_ldh_a_d8(t_gameboy *gb)
 {
-  gb->registers.a = fetch_byte(gb->memory.start + 0xFF00 + fetch_byte(gb->memory.start + gb->registers.pc));
+  gb->registers.a = fetch_byte(gb->memory.start + 0xFF00 + gb->operand.len8);
 }
 
 void	instr_ld_bc_d16(t_gameboy *gb)
 {
-  gb->registers.bc = fetch_word(gb->memory.start + gb->registers.pc);
+  gb->registers.bc = gb->operand.len16;
 }
 
 void	instr_ld_de_d16(t_gameboy *gb)
 {
-  gb->registers.de = fetch_word(gb->memory.start + gb->registers.pc);
+  gb->registers.de = gb->operand.len16;
 }
 
 void	instr_ld_hl_d16(t_gameboy *gb)
 {
-  gb->registers.hl = fetch_word(gb->memory.start + gb->registers.pc);
+  gb->registers.hl = gb->operand.len16;
 }
 
 void	instr_ld_sp_d16(t_gameboy *gb)
 {
-  gb->registers.sp = fetch_word(gb->memory.start + gb->registers.pc);
+  gb->registers.sp = gb->operand.len16;
 }
 
 void	instr_ld_sp_hl(t_gameboy *gb)
@@ -476,7 +478,7 @@ void	instr_ldhl_sp_d8(t_gameboy *gb)
 
 void	instr_ld_d16_sp(t_gameboy *gb)
 {
-  write_word(gb->memory.start + fetch_word(gb->memory.start + gb->registers.pc), gb->registers.sp);
+  write_word(gb->memory.start + gb->operand.len16, gb->registers.sp);
 }
 
 void	instr_push_af(t_gameboy *gb)
@@ -625,7 +627,7 @@ void	instr_add_a_hlp(t_gameboy *gb)
 void	instr_add_a_d8(t_gameboy *gb)
 {
   unsigned char		lo = gb->registers.a;
-  unsigned char		ro = fetch_byte(gb->memory.start + gb->registers.pc);
+  unsigned char		ro = gb->operand.len8;
 
   gb->registers.a += ro;
   set_if_zero(&gb->registers, gb->registers.a);
@@ -733,7 +735,7 @@ void	instr_adc_a_hlp(t_gameboy *gb)
 void	instr_adc_a_d8(t_gameboy *gb)
 {
   unsigned char		lo = gb->registers.a;
-  unsigned char		ro = fetch_byte(gb->memory.start + gb->registers.pc) + get_carry_flag(gb->registers.f);
+  unsigned char		ro = gb->operand.len8 + get_carry_flag(gb->registers.f);
 
   gb->registers.a += ro;
   set_if_zero(&gb->registers, gb->registers.a);
@@ -840,7 +842,7 @@ void	instr_sub_a_hlp(t_gameboy *gb)
 void	instr_sub_a_d8(t_gameboy *gb)
 {
   unsigned char	lo = gb->registers.a;
-  unsigned char	ro = fetch_byte(gb->memory.start + gb->registers.pc);
+  unsigned char	ro = gb->operand.len8;
 
   gb->registers.a -= ro;
   set_if_zero(&gb->registers, gb->registers.a);
@@ -948,7 +950,7 @@ void	instr_sbc_a_hlp(t_gameboy *gb)
 void	instr_sbc_a_d8(t_gameboy *gb)
 {
   unsigned char	lo = gb->registers.a;
-  unsigned char	ro = fetch_byte(gb->memory.start + gb->registers.pc) + get_carry_flag(gb->registers.f);
+  unsigned char	ro = gb->operand.len8 + get_carry_flag(gb->registers.f);
 
   gb->registers.a -= ro;
   set_if_zero(&gb->registers, gb->registers.a);
@@ -1031,7 +1033,7 @@ void	instr_and_a_hlp(t_gameboy *gb)
 
 void	instr_and_a_d8(t_gameboy *gb)
 {
-  gb->registers.a &= fetch_byte(gb->memory.start + gb->registers.pc);
+  gb->registers.a &= gb->operand.len8;
   set_if_zero(&gb->registers, gb->registers.a);
   unset_substract_flag(&gb->registers);
   set_half_carry_flag(&gb->registers);
@@ -1112,7 +1114,7 @@ void	instr_or_a_hlp(t_gameboy *gb)
 
 void	instr_or_a_d8(t_gameboy *gb)
 {
-  gb->registers.a |= fetch_byte(gb->memory.start + gb->registers.pc);
+  gb->registers.a |= gb->operand.len8;
   set_if_zero(&gb->registers, gb->registers.a);
   unset_substract_flag(&gb->registers);
   unset_half_carry_flag(&gb->registers);
@@ -1193,7 +1195,7 @@ void	instr_xor_a_hlp(t_gameboy *gb)
 
 void	instr_xor_a_d8(t_gameboy *gb)
 {
-  gb->registers.a |= fetch_byte(gb->memory.start + gb->registers.pc);
+  gb->registers.a |= gb->operand.len8;
   set_if_zero(&gb->registers, gb->registers.a);
   unset_substract_flag(&gb->registers);
   unset_half_carry_flag(&gb->registers);
@@ -1309,7 +1311,7 @@ void	instr_cp_a_hlp(t_gameboy *gb)
 void	instr_cp_a_d8(t_gameboy *gb)
 {
   unsigned char		lo = gb->registers.a;
-  unsigned char		ro = fetch_byte(gb->memory.start + gb->registers.pc);
+  unsigned char		ro = gb->operand.len8;
 
   set_if_zero(&gb->registers, lo - ro);
   set_substract_flag(&gb->registers);
@@ -1516,7 +1518,7 @@ void	instr_add_hl_sp(t_gameboy *gb)
 void	instr_add_sp_r8(t_gameboy *gb)
 {
   unsigned short	lo = gb->registers.sp;
-  char			ro = fetch_byte(gb->memory.start + gb->registers.pc);
+  char			ro = gb->operand.len8;
 
   gb->registers.sp += ro;
   unset_substract_flag(&gb->registers);
@@ -1611,156 +1613,287 @@ void	instr_nop(t_gameboy *gb)
 
 void	instr_halt(t_gameboy *gb)
 {
+  (void)gb;
+#warning "TODO: implement halt"
 }
 
 void	instr_stop(t_gameboy *gb)
 {
+  (void)gb;
+#warning "TODO: implement stop"
 }
 
+// TODO: "Manage Interupts in main program"
 void	instr_di(t_gameboy *gb)
 {
+  gb->interupts |= DISABLE_NEXT;
 }
 
 void	instr_ei(t_gameboy *gb)
 {
+  gb->interupts |= ENABLE_NEXT;
 }
 
 void	instr_rlca(t_gameboy *gb)
 {
+  bool			bit = IS_NEG(gb->registers.a);
+
+  gb->registers.a = (gb->registers.a << 1) | bit;
+  set_if_zero(&gb->registers, gb->registers.a);
+  unset_substract_flag(&gb->registers);
+  unset_half_carry_flag(&gb->registers);
+  attr_carry_flag(&gb->registers, bit);
 }
 
 void	instr_rla(t_gameboy *gb)
 {
+  bool			head = IS_NEG(gb->registers.a);
+
+  gb->registers.a = (gb->registers.a << 1) | get_carry_flag(gb->registers.f);
+  set_if_zero(&gb->registers, gb->registers.a);
+  unset_substract_flag(&gb->registers);
+  unset_half_carry_flag(&gb->registers);
+  attr_carry_flag(&gb->registers, head);
 }
 
 void	instr_rrca(t_gameboy *gb)
 {
+  bool			tail = (gb->registers.a & 0x01);
+
+  gb->registers.a = (gb->registers.a >> 1) | (tail << 7);
+  set_if_zero(&gb->registers, gb->registers.a);
+  unset_substract_flag(&gb->registers);
+  unset_half_carry_flag(&gb->registers);
+  attr_carry_flag(&gb->registers, tail);
 }
 
 void	instr_rra(t_gameboy *gb)
 {
+  bool			tail = (gb->registers.a & 0x01);
+
+  gb->registers.a = (gb->registers.a >> 1) | (get_carry_flag(gb->registers.f) << 7);
+  set_if_zero(&gb->registers, gb->registers.a);
+  unset_substract_flag(&gb->registers);
+  unset_half_carry_flag(&gb->registers);
+  attr_carry_flag(&gb->registers, tail);
 }
 
 void	instr_jp_a16(t_gameboy *gb)
 {
+  gb->registers.pc = gb->operand.len16;
 }
 
 void	instr_jp_nz_a16(t_gameboy *gb)
 {
+  if (!get_zero_flag(gb->registers.f))
+    gb->registers.pc = gb->operand.len16;
 }
 
 void	instr_jp_z_a16(t_gameboy *gb)
 {
+  if (get_zero_flag(gb->registers.f))
+    gb->registers.pc = gb->operand.len16;
 }
 
 void	instr_jp_nc_a16(t_gameboy *gb)
 {
+  if (!get_carry_flag(gb->registers.f))
+    gb->registers.pc = gb->operand.len16;
 }
 
 void	instr_jp_c_a16(t_gameboy *gb)
 {
+  if (get_carry_flag(gb->registers.f))
+    gb->registers.pc = gb->operand.len16;
 }
 
-void	instr_jp_hl(t_gameboy *gb)
+void	instr_jp_hlp(t_gameboy *gb)
 {
+  gb->registers.pc = gb->registers.hl;
 }
 
 void	instr_jr_r8(t_gameboy *gb)
 {
+  gb->registers.pc += fetch_byte(gb->memory.start + gb->registers.hl);
 }
 
 void	instr_jr_nz_r8(t_gameboy *gb)
 {
+  if (!get_zero_flag(gb->registers.f))
+    gb->registers.pc += fetch_byte(gb->memory.start + gb->registers.hl);
 }
 
 void	instr_jr_z_r8(t_gameboy *gb)
 {
+  if (get_zero_flag(gb->registers.f))
+    gb->registers.pc += fetch_byte(gb->memory.start + gb->registers.hl);
 }
 
 void	instr_jr_nc_r8(t_gameboy *gb)
 {
+  if (!get_carry_flag(gb->registers.f))
+    gb->registers.pc += fetch_byte(gb->memory.start + gb->registers.hl);
 }
 
 void	instr_jr_c_r8(t_gameboy *gb)
 {
+  if (get_carry_flag(gb->registers.f))
+    gb->registers.pc += fetch_byte(gb->memory.start + gb->registers.hl);
 }
 
 void	instr_call_a16(t_gameboy *gb)
 {
+  unsigned short	addr = gb->operand.len16;
+
+  gb->registers.sp -= 2;
+  write_word(gb->memory.start + gb->registers.sp, gb->registers.pc);
+  gb->registers.pc = addr;
 }
 
 void	instr_call_nz_a16(t_gameboy *gb)
 {
+  if (get_zero_flag(gb->registers.f))
+    return ;
+  unsigned short	addr = gb->operand.len16;
+
+  gb->registers.sp -= 2;
+  write_word(gb->memory.start + gb->registers.sp, gb->registers.pc);
+  gb->registers.pc = addr;
 }
 
 void	instr_call_z_a16(t_gameboy *gb)
 {
+  if (!get_zero_flag(gb->registers.f))
+    return ;
+  unsigned short	addr = gb->operand.len16;
+
+  gb->registers.sp -= 2;
+  write_word(gb->memory.start + gb->registers.sp, gb->registers.pc);
+  gb->registers.pc = addr;
 }
 
 void	instr_call_nc_a16(t_gameboy *gb)
 {
+  if (get_carry_flag(gb->registers.f))
+    return ;
+  unsigned short	addr = gb->operand.len16;
+
+  gb->registers.sp -= 2;
+  write_word(gb->memory.start + gb->registers.sp, gb->registers.pc);
+  gb->registers.pc = addr;
 }
 
 void	instr_call_c_a16(t_gameboy *gb)
 {
+  if (!get_carry_flag(gb->registers.f))
+    return ;
+  unsigned short	addr = gb->operand.len16;
+
+  gb->registers.sp -= 2;
+  write_word(gb->memory.start + gb->registers.sp, gb->registers.pc);
+  gb->registers.pc = addr;
+}
+
+void	rst_base(t_gameboy *gb, unsigned short value)
+{
+  gb->registers.sp -= 2;
+  write_word(gb->memory.start + gb->registers.sp, gb->registers.pc);
+  gb->registers.pc = value;
 }
 
 void	instr_rst_00(t_gameboy *gb)
 {
+  rst_base(gb, 0x00);
 }
 
 void	instr_rst_08(t_gameboy *gb)
 {
+  rst_base(gb, 0x08);
 }
 
 void	instr_rst_10(t_gameboy *gb)
 {
+  rst_base(gb, 0x10);
 }
 
 void	instr_rst_18(t_gameboy *gb)
 {
+  rst_base(gb, 0x18);
 }
 
 void	instr_rst_20(t_gameboy *gb)
 {
+  rst_base(gb, 0x20);
 }
 
 void	instr_rst_28(t_gameboy *gb)
 {
+  rst_base(gb, 0x28);
 }
 
 void	instr_rst_30(t_gameboy *gb)
 {
+  rst_base(gb, 0x30);
 }
 
 void	instr_rst_38(t_gameboy *gb)
 {
+  rst_base(gb, 0x38);
 }
 
 void	instr_ret(t_gameboy *gb)
 {
+  gb->registers.pc = fetch_word(gb->memory.start + gb->registers.sp);
+  gb->registers.sp += 2;
 }
 
 void	instr_ret_nz(t_gameboy *gb)
 {
+  if (!get_zero_flag(gb->registers.f))
+    {
+      gb->registers.pc = fetch_word(gb->memory.start + gb->registers.sp);
+      gb->registers.sp += 2;
+    }
 }
 
 void	instr_ret_z(t_gameboy *gb)
 {
+  if (get_zero_flag(gb->registers.f))
+    {
+      gb->registers.pc = fetch_word(gb->memory.start + gb->registers.sp);
+      gb->registers.sp += 2;
+    }
 }
 
 void	instr_ret_nc(t_gameboy *gb)
 {
+  if (!get_carry_flag(gb->registers.f))
+    {
+      gb->registers.pc = fetch_word(gb->memory.start + gb->registers.sp);
+      gb->registers.sp += 2;
+    }
 }
 
 void	instr_ret_c(t_gameboy *gb)
 {
+  if (get_carry_flag(gb->registers.f))
+    {
+      gb->registers.pc = fetch_word(gb->memory.start + gb->registers.sp);
+      gb->registers.sp += 2;
+    }
 }
 
 void	instr_reti(t_gameboy *gb)
 {
+  if (get_carry_flag(gb->registers.f))
+    {
+      gb->registers.pc = fetch_word(gb->memory.start + gb->registers.sp);
+      gb->registers.sp += 2;
+    }
+  gb->interupts = ENABLED;
 }
 
 void	instr_prefix_cb(t_gameboy *gb)
 {
+  (*g_cb_instructions[gb->operand.len8].func)(gb);
 }

@@ -108,6 +108,8 @@ void			init_registers(t_gameboy *gb)
   gb->registers.bc	= 0x0013;
   gb->registers.de	= 0x00D8;
   gb->registers.hl	= 0x014D;
+  gb->registers.sp	= 0xFFFE;
+  gb->registers.pc	= 0x0100;
 }
 
 void			set_if_carry(t_registers *registers, unsigned char a, unsigned char b, unsigned char res)

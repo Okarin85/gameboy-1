@@ -46,3 +46,4 @@ test_roms
 .gdb_history
 vgcore.*
 peda-*
+.ycm_extra_conf*

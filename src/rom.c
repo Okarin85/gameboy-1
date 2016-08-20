@@ -131,6 +131,8 @@ static int	check_header_checksum(t_gameboy *gb)
 {
   unsigned char	checksum = 0;
 
+#warning "Remove this"
+  return (0);
   printf("Rom checksum : %d\n", gb->rom.header.header_checksum);
   for (unsigned i = 0x34; i <= 0x4C; ++i)
     {
@@ -139,6 +141,7 @@ static int	check_header_checksum(t_gameboy *gb)
   printf("Obtained checksum : %d\n", checksum);
   return (gb->rom.header.header_checksum != checksum ?
 	  perr("The header checksum is invalid !\n") : 0);
+  printf("_________________________\n\n");
 }
 
 static int	check_ram_size(unsigned char rs)
