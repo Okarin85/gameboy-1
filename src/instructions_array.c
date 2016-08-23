@@ -6,7 +6,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     ** _________________________________________________________________________
     */
 
-    // lD nn, d8 : put value nn into d8.
+    // LD nn, d8 : put value nn into d8.
     [0x06] = {"LD B, [0x%02X]",	&instr_ld_b_d8,		1,	8},
     [0x0E] = {"LD C, [0x%02X]",	&instr_ld_c_d8,		1,	8},
     [0x16] = {"LD D, [0x%02X]",	&instr_ld_d_d8,		1,	8},
