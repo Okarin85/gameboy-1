@@ -102,6 +102,16 @@ static int	dump_rom(t_gameboy *gb, FILE *fs)
   return (ferror(fs) ? perr(FUNC_ERR("fread")) : 0);
 }
 
+static unsigned short	get_word(void *const address)
+{
+#ifdef L_ENDIAN
+  return ((*((unsigned short *)address) & 0x00FF) << 8) |
+    ((*((unsigned short *)address) & 0xFF00) >> 8);
+#else
+  return (*((unsigned short *)address));
+# endif /* !L_ENDIAN */
+}
+
 /*
 ** I could have read the whole structure by packing it,
 ** but for eventual portability problems, I decided to fill it
@@ -114,16 +124,16 @@ static void	get_rom_header(t_gameboy *gb)
   header->start = gb->rom.start + 0x100;
   memcpy(header->nintendo, header->start + 0x04, sizeof(header->nintendo));
   memcpy(header->title, header->start + 0x34, sizeof(header->title));
-  header->new_licensee_code = inverted_fetch_word(header->start + 0x44);
-  header->sgb_flag = fetch_byte(header->start + 0x46);
-  header->cart_type = fetch_byte(header->start + 0x47);
-  header->cart_rom_size = fetch_byte(header->start + 0x48);
-  header->cart_ram_size = fetch_byte(header->start + 0x49);
-  header->destination_code = fetch_byte(header->start + 0x4A);
-  header->old_licensee_code = fetch_byte(header->start + 0x4B);
-  header->mask_rom_version = fetch_byte(header->start + 0x4C);
-  header->header_checksum = fetch_byte(header->start + 0x4D);
-  header->global_checksum = inverted_fetch_word(header->start + 0x4E);
+  header->new_licensee_code = get_word(header->start + 0x44);
+  header->sgb_flag = header->start[0x46];
+  header->cart_type = header->start[0x47];
+  header->cart_rom_size = header->start[0x48];
+  header->cart_ram_size = header->start[0x49];
+  header->destination_code = header->start[0x4A];
+  header->old_licensee_code = header->start[0x4B];
+  header->mask_rom_version = header->start[0x4C];
+  header->header_checksum = header->start[0x4D];
+  header->global_checksum = get_word(header->start + 0x4E);
   print_header_infos(&gb->rom.header);
 }
 
@@ -131,12 +141,12 @@ static int	check_header_checksum(t_gameboy *gb)
 {
   unsigned char	checksum = 0;
 
-#warning "Remove this"
-  return (0);
+/*#warning "Remove this"*/
+  /*return (0);*/
   printf("Rom checksum : %d\n", gb->rom.header.header_checksum);
   for (unsigned i = 0x34; i <= 0x4C; ++i)
     {
-      checksum = checksum - fetch_byte(gb->rom.header.start + i) - 1;
+      checksum = checksum - (gb->rom.header.start[i]) - 1;
     }
   printf("Obtained checksum : %d\n", checksum);
   return (gb->rom.header.header_checksum != checksum ?

@@ -1,8 +1,10 @@
 #ifndef GAMEBOY_H_
 # define GAMEBOY_H_
 
+# include "cpu.h"
 # include "registers.h"
 # include "rom.h"
+# include "interrupts.h"
 # include "memory.h"
 
 typedef struct		s_file
@@ -11,18 +13,17 @@ typedef struct		s_file
   long			size;
 }			t_file;
 
-enum			e_interupts_state {
-    ENABLED		= (1 << 1),
-    DISABLED		= (1 << 2),
-    ENABLE_NEXT		= (1 << 3),
-    DISABLE_NEXT	= (1 << 4),
-};
-
-typedef union		u_operand
+typedef struct		s_keys
 {
-  unsigned char		len8;
-  unsigned short	len16;
-}			t_operand;
+  bool			a;
+  bool			b;
+  bool			select;
+  bool			start;
+  bool			left;
+  bool			right;
+  bool			up;
+  bool			down;
+}			t_keys;
 
 typedef struct		s_gameboy
 {
@@ -31,9 +32,10 @@ typedef struct		s_gameboy
   t_registers		registers;
   t_hardware_registers	hregisters;
   t_rom			rom;
-  t_operand		operand;
+  t_fetched		instruction;
+  t_keys		keys;
+  t_interrupts		interrupts;
   unsigned		ticks;
-  char			interupts;
 }			t_gameboy;
 
 int		init_gameboy(t_gameboy *gb);

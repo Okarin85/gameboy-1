@@ -7,12 +7,12 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     */
 
     // LD nn, d8 : put value nn into d8.
-    [0x06] = {"LD B, [0x%02X]",	&instr_ld_b_d8,		1,	8},
-    [0x0E] = {"LD C, [0x%02X]",	&instr_ld_c_d8,		1,	8},
-    [0x16] = {"LD D, [0x%02X]",	&instr_ld_d_d8,		1,	8},
-    [0x1E] = {"LD E, [0x%02X]",	&instr_ld_e_d8,		1,	8},
-    [0x26] = {"LD H, [0x%02X]",	&instr_ld_h_d8,		1,	8},
-    [0x2E] = {"LD L, [0x%02X]",	&instr_ld_l_d8,		1,	8},
+    [0x06] = {"LD B, [0x%02hhX]",	&instr_ld_b_d8,		1,	8},
+    [0x0E] = {"LD C, [0x%02hhX]",	&instr_ld_c_d8,		1,	8},
+    [0x16] = {"LD D, [0x%02hhX]",	&instr_ld_d_d8,		1,	8},
+    [0x1E] = {"LD E, [0x%02hhX]",	&instr_ld_e_d8,		1,	8},
+    [0x26] = {"LD H, [0x%02hhX]",	&instr_ld_h_d8,		1,	8},
+    [0x2E] = {"LD L, [0x%02hhX]",	&instr_ld_l_d8,		1,	8},
 
     // LD r1, r2 : put value r2 into r1.
     [0x7F] = {"LD A, A",		&instr_ld_a_a,		0,	4},
@@ -78,13 +78,13 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x73] = {"LD (HL), E",		&instr_ld_hl_e,		0,	8},
     [0x74] = {"LD (HL), H",		&instr_ld_hl_h,		0,	8},
     [0x75] = {"LD (HL), L",		&instr_ld_hl_l,		0,	8},
-    [0x36] = {"LD (HL), [0x%02X]",	&instr_ld_hl_d8,	1,	12},
+    [0x36] = {"LD (HL), [0x%02hhX]",	&instr_ld_hl_d8,	1,	12},
 
     // LD A, n : put value n into A.
     [0x0A] = {"LD A, (BC)",		&instr_ld_a_bcp,	0,	8},
     [0x1A] = {"LD A, (DE)",		&instr_ld_a_dep,	0,	8},
-    [0xFA] = {"LD A, ([0x%04X])",	&instr_ld_a_a16,	2,	16},
-    [0x3E] = {"LD A, [0x%02X]",		&instr_ld_a_d8,		1,	8},
+    [0xFA] = {"LD A, ([0x%04hX])",	&instr_ld_a_a16,	2,	16},
+    [0x3E] = {"LD A, [0x%02hhX]",	&instr_ld_a_d8,		1,	8},
 
     // LD n, A : put value A into n.
     [0x47] = {"LD B, A",		&instr_ld_b_a,		0,	4},
@@ -96,7 +96,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x02] = {"LD (BC), A",		&instr_ld_bcp_a,	0,	8},
     [0x12] = {"LD (DE), A",		&instr_ld_dep_a,	0,	8},
     [0x77] = {"LD (HL), A",		&instr_ld_hlp_a,	0,	8},
-    [0xEA] = {"LD ([0x%04X]), A",	&instr_ld_a16_a,	2,	16},
+    [0xEA] = {"LD ([0x%04hX]), A",	&instr_ld_a16_a,	2,	16},
 
     // LD A, (C) : put value at address $FF00 + register C into A.
     // Same as : LD A, ($FF00 + C)
@@ -118,10 +118,10 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x22] = {"LDI (HL), A",		&instr_ldi_hlp_a,	0,	8},
 
     // LDH (d8), A : put A into memory address $FF00 + d8.
-    [0xE0] = {"LDH ([0x%02X]), A",	&instr_ldh_d8_a,	1,	12},
+    [0xE0] = {"LDH ([0x%02hhX]), A",	&instr_ldh_d8_a,	1,	12},
 
     // LDH A, (d8) : put memory address $FF00 + d8 into A.
-    [0xF0] = {"LDH A, ([0x%02X])",	&instr_ldh_a_d8,	1,	12},
+    [0xF0] = {"LDH A, ([0x%02hhX])",	&instr_ldh_a_d8,	1,	12},
 
     /*
     **                              16-BIT LOADS
@@ -129,16 +129,16 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     */
 
     // LD r, d16 : put value d16 into r.
-    [0x01] = {"LD BC, [0x%04X]",	&instr_ld_bc_d16,	2,	12},
-    [0x11] = {"LD DE, [0x%04X]",	&instr_ld_de_d16,	2,	12},
-    [0x21] = {"LD HL, [0x%04X]",	&instr_ld_hl_d16,	2,	12},
-    [0x31] = {"LD SP, [0x%04X]",	&instr_ld_sp_d16,	2,	12},
+    [0x01] = {"LD BC, [0x%04hX]",	&instr_ld_bc_d16,	2,	12},
+    [0x11] = {"LD DE, [0x%04hX]",	&instr_ld_de_d16,	2,	12},
+    [0x21] = {"LD HL, [0x%04hX]",	&instr_ld_hl_d16,	2,	12},
+    [0x31] = {"LD SP, [0x%04hX]",	&instr_ld_sp_d16,	2,	12},
 
     // LD SP, HL : put HL into SP.
     [0xF9] = {"LD SP, HL",		&instr_ld_sp_hl,	0,	8},
 
     // LDHL SP, d8 : put SP + d8 effective address into HL.
-    [0xF8] = {"LDHL SP, [0x%02X]",	&instr_ldhl_sp_d8,	1,	12},
+    [0xF8] = {"LDHL SP, [0x%02hhX]",	&instr_ldhl_sp_d8,	1,	12},
 
     // LD d16, SP : put SP at address d16.
     [0x08] = {"LD (d16), SP",		&instr_ld_d16_sp,	2,	20},
@@ -169,7 +169,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x84] = {"ADD A, H",		&instr_add_a_h,		0,	4},
     [0x85] = {"ADD A, L",		&instr_add_a_l,		0,	4},
     [0x86] = {"ADD A, (HL)",		&instr_add_a_hlp,	0,	8},
-    [0xC6] = {"ADD A, [0x%02X]",	&instr_add_a_d8,	1,	8},
+    [0xC6] = {"ADD A, [0x%02hhX]",	&instr_add_a_d8,	1,	8},
 
     // ADC A, r : add r + Carry flag to A.
     [0x8F] = {"ADC A, A",		&instr_adc_a_a,		0,	4},
@@ -180,7 +180,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x8C] = {"ADC A, H",		&instr_adc_a_h,		0,	4},
     [0x8D] = {"ADC A, L",		&instr_adc_a_l,		0,	4},
     [0x8E] = {"ADC A, (HL)",		&instr_adc_a_hlp,	0,	8},
-    [0xCE] = {"ADC A, [0x%02X]",	&instr_adc_a_d8,	1,	8},
+    [0xCE] = {"ADC A, [0x%02hhX]",	&instr_adc_a_d8,	1,	8},
 
     // SUB r : substract r to A.
     [0x97] = {"SUB A, A",		&instr_sub_a_a,		0,	4},
@@ -191,7 +191,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x94] = {"SUB A, H",		&instr_sub_a_h,		0,	4},
     [0x95] = {"SUB A, L",		&instr_sub_a_l,		0,	4},
     [0x96] = {"SUB A, (HL)",		&instr_sub_a_hlp,	0,	8},
-    [0xD6] = {"SUB A, [0x%02X]",	&instr_sub_a_d8,	1,	8},
+    [0xD6] = {"SUB A, [0x%02hhX]",	&instr_sub_a_d8,	1,	8},
 
     // SBC A, r : substract r + Carry flag from A.
     [0x9F] = {"SBC A, A",		&instr_sbc_a_a,		0,	4},
@@ -202,7 +202,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x9C] = {"SBC A, H",		&instr_sbc_a_h,		0,	4},
     [0x9D] = {"SBC A, L",		&instr_sbc_a_l,		0,	4},
     [0x9E] = {"SBC A, (HL)",		&instr_sbc_a_hlp,	0,	8},
-    [0xDE] = {"SBC A, [0x%02X]",	&instr_sbc_a_d8,	1,	8}, // ATTENTION, indefini dans le GameBoy CPU Manual
+    [0xDE] = {"SBC A, [0x%02hhX]",	&instr_sbc_a_d8,	1,	8}, // ATTENTION, indefini dans le GameBoy CPU Manual
 
     // AND r : logically AND r with A, result in A.
     [0xA7] = {"AND A, A",		&instr_and_a_a,		0,	4},
@@ -213,7 +213,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0xA4] = {"AND A, H",		&instr_and_a_h,		0,	4},
     [0xA5] = {"AND A, L",		&instr_and_a_l,		0,	4},
     [0xA6] = {"AND A, (HL)",		&instr_and_a_hlp,	0,	8},
-    [0xE6] = {"AND A, [0x%02X]",	&instr_and_a_d8,	1,	8},
+    [0xE6] = {"AND A, [0x%02hhX]",	&instr_and_a_d8,	1,	8},
 
     // OR r : logical OR r with A, result in A.
     [0xB7] = {"OR A, A",		&instr_or_a_a,		0,	4},
@@ -224,7 +224,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0xB4] = {"OR A, H",		&instr_or_a_h,		0,	4},
     [0xB5] = {"OR A, L",		&instr_or_a_l,		0,	4},
     [0xB6] = {"OR A, (HL)",		&instr_or_a_hlp,		0,	8},
-    [0xF6] = {"OR A, [0x%02X]",	&instr_or_a_d8,		1,	8},
+    [0xF6] = {"OR A, [0x%02hhX]",	&instr_or_a_d8,		1,	8},
 
     // XOR r : logical XOR r with A, result in A.
     [0xAF] = {"XOR A, A",		&instr_xor_a_a,		0,	4},
@@ -235,7 +235,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0xAC] = {"XOR A, H",		&instr_xor_a_h,		0,	4},
     [0xAD] = {"XOR A, L",		&instr_xor_a_l,		0,	4},
     [0xAE] = {"XOR A, (HL)",		&instr_xor_a_hlp,	0,	8},
-    [0xEE] = {"XOR A, [0x%02X]",	&instr_xor_a_d8,	1,	8},
+    [0xEE] = {"XOR A, [0x%02hhX]",	&instr_xor_a_d8,	1,	8},
 
     // CP r : compare A with n. This is A - r.
     [0xBF] = {"CP A, A",		&instr_cp_a_a,		0,	4},
@@ -246,7 +246,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0xBC] = {"CP A, H",		&instr_cp_a_h,		0,	4},
     [0xBD] = {"CP A, L",		&instr_cp_a_l,		0,	4},
     [0xBE] = {"CP A, (HL)",		&instr_cp_a_hlp,	0,	8},
-    [0xFE] = {"CP A, [0x%02X]",	&instr_cp_a_d8,		1,	8},
+    [0xFE] = {"CP A, [0x%02hhX]",	&instr_cp_a_d8,		1,	8},
 
     // INC r : decrement register n.
     [0x3C] = {"INC A, A",		&instr_inc_a_a,		0,	4},
@@ -280,7 +280,7 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     [0x39] = {"ADD HL, SP",		&instr_add_hl_sp,	0,	8},
 
     // ADD SP, r8 : add r8 to SP.
-    [0xE8] = {"ADD SP, [0x%02X]",	&instr_add_sp_r8,	1,	16},
+    [0xE8] = {"ADD SP, [0x%02hhX]",	&instr_add_sp_r8,	1,	16},
 
     // INC rr : increment register rr.
     [0x03] = {"INC BC",			&instr_inc_bc,		0,	8},
@@ -354,23 +354,23 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     */
 
     // JP a16 : jump to address a16.
-    [0xC3] = {"JP [0x%04X]",		&instr_jp_a16,		2,	16},
+    [0xC3] = {"JP [0x%04hX]",		&instr_jp_a16,		2,	16},
 
     // JP cond, a16 : jump to address a16 if following condition is true :
     // cond = NZ, Jump if Z flag is reset.
     // cond = Z,  Jump if Z flag is set.
     // cond = NC, Jump if C flag is reset.
     // cond = C,  Jump if C flag is set.
-    [0xC2] = {"JP NZ, [0x%04X]",	&instr_jp_nz_a16,	2,	12},
-    [0xCA] = {"JP Z, [0x%04X]",		&instr_jp_z_a16,	2,	12},
-    [0xD2] = {"JP NC, [0x%04X]",	&instr_jp_nc_a16,	2,	12},
-    [0xDA] = {"JP C, [0x%04X]",		&instr_jp_c_a16,	2,	12},
+    [0xC2] = {"JP NZ, [0x%04hX]",	&instr_jp_nz_a16,	2,	12},
+    [0xCA] = {"JP Z, [0x%04hX]",	&instr_jp_z_a16,	2,	12},
+    [0xD2] = {"JP NC, [0x%04hX]",	&instr_jp_nc_a16,	2,	12},
+    [0xDA] = {"JP C, [0x%04hX]",	&instr_jp_c_a16,	2,	12},
 
     // JP (HL) : jump to address contained in HL.
     [0xE9] = {"JP (HL)",		&instr_jp_hlp,		0,	4},
 
     // JR r8 : add n to current address and jump to it.
-    [0x18] = {"JR [0x%02X]",		&instr_jr_r8,		0,	8},
+    [0x18] = {"JR [0x%02hhX]",		&instr_jr_r8,		0,	8},
 
     // JR r8 : if following condition is true then add n to current address
     // and jump to it.
@@ -378,10 +378,10 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     // cond = Z,  Jump if Z flag is set.
     // cond = NC, Jump if C flag is reset.
     // cond = C,  Jump if C flag is set.
-    [0x20] = {"JR NZ, [0x%02X]",	&instr_jr_nz_r8,	1,	8},
-    [0x28] = {"JR Z, [0x%02X]",		&instr_jr_z_r8,		1,	8},
-    [0x30] = {"JR NC, [0x%02X]",	&instr_jr_nc_r8,	1,	8},
-    [0x38] = {"JR C, [0x%02X]",		&instr_jr_c_r8,		1,	8},
+    [0x20] = {"JR NZ, [0x%02hhX]",	&instr_jr_nz_r8,	1,	8},
+    [0x28] = {"JR Z, [0x%02hhX]",	&instr_jr_z_r8,		1,	8},
+    [0x30] = {"JR NC, [0x%02hhX]",	&instr_jr_nc_r8,	1,	8},
+    [0x38] = {"JR C, [0x%02hhX]",	&instr_jr_c_r8,		1,	8},
 
     /*
     **                                   CALLS
@@ -391,17 +391,17 @@ const t_instruction		g_instructions[MAX_INSTRUCTION + 1] = {
     // CALL a16 : push address of next instruction onto stack
     // and then jump to address a16.
 
-    [0xCD] = {"CALL [0x%04X]",	&instr_call_a16,	2,	12},
+    [0xCD] = {"CALL [0x%04hX]",	&instr_call_a16,	2,	12},
 
     // CALL cond, a16 : call address a16 if following condition is true :
     // cond = NZ, Jump if Z flag is reset.
     // cond = Z,  Jump if Z flag is set.
     // cond = NC, Jump if C flag is reset.
     // cond = C,  Jump if C flag is set.
-    [0xC4] = {"CALL NZ, [0x%04X]",	&instr_call_nz_a16,	2,	12},
-    [0xCC] = {"CALL Z, [0x%04X]",	&instr_call_z_a16,	2,	12},
-    [0xD4] = {"CALL NC, [0x%04X]",	&instr_call_nc_a16,	2,	12},
-    [0xDC] = {"CALL C, [0x%04X]",	&instr_call_c_a16,	2,	12},
+    [0xC4] = {"CALL NZ, [0x%04hX]",	&instr_call_nz_a16,	2,	12},
+    [0xCC] = {"CALL Z, [0x%04hX]",	&instr_call_z_a16,	2,	12},
+    [0xD4] = {"CALL NC, [0x%04hX]",	&instr_call_nc_a16,	2,	12},
+    [0xDC] = {"CALL C, [0x%04hX]",	&instr_call_c_a16,	2,	12},
 
     /*
     **                               RESTARTS

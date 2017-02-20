@@ -68,9 +68,9 @@ void	cb_instr_swap_a_l(t_gameboy *gb)
 
 void	cb_instr_swap_a_hlp(t_gameboy *gb)
 {
-  unsigned char		value = fetch_byte(gb->memory.start + gb->registers.hl);
+  unsigned char		value = fetch_byte(gb, gb->registers.hl);
 
-  write_byte(gb->memory.start + gb->registers.hl, SWAP_NIBLES(value));
+  write_byte(gb, gb->registers.hl, SWAP_NIBLES(value));
   set_if_zero(&gb->registers, value);
   unset_substract_flag(&gb->registers);
   unset_half_carry_flag(&gb->registers);
@@ -156,11 +156,11 @@ void	cb_instr_rlc_l(t_gameboy *gb)
 
 void	cb_instr_rlc_hlp(t_gameboy *gb)
 {
-  unsigned char		res = fetch_byte(gb->memory.start + gb->registers.hl);
+  unsigned char		res = fetch_byte(gb, gb->registers.hl);
   bool			bit = IS_NEG(res);
 
   res = (res << 1) | bit;
-  write_byte(gb->memory.start + gb->registers.hl, res);
+  write_byte(gb, gb->registers.hl, res);
   set_if_zero(&gb->registers, res);
   unset_substract_flag(&gb->registers);
   unset_half_carry_flag(&gb->registers);
@@ -246,11 +246,11 @@ void	cb_instr_rl_l(t_gameboy *gb)
 
 void	cb_instr_rl_hlp(t_gameboy *gb)
 {
-  unsigned char		res = fetch_byte(gb->memory.start + gb->registers.hl);
+  unsigned char		res = fetch_byte(gb, gb->registers.hl);
   bool			head = IS_NEG(res);
 
   res = (res << 1) | get_carry_flag(gb->registers.f);
-  write_byte(gb->memory.start + gb->registers.hl, res);
+  write_byte(gb, gb->registers.hl, res);
   set_if_zero(&gb->registers, res);
   unset_substract_flag(&gb->registers);
   unset_half_carry_flag(&gb->registers);
@@ -336,11 +336,11 @@ void	cb_instr_rrc_l(t_gameboy *gb)
 
 void	cb_instr_rrc_hlp(t_gameboy *gb)
 {
-  unsigned char		res = fetch_byte(gb->memory.start + gb->registers.hl);
+  unsigned char		res = fetch_byte(gb, gb->registers.hl);
   bool			tail = (res & 0x01);
 
   res = (res >> 1) | (tail << 7);
-  write_byte(gb->memory.start + gb->registers.hl, res);
+  write_byte(gb, gb->registers.hl, res);
   set_if_zero(&gb->registers, res);
   unset_substract_flag(&gb->registers);
   unset_half_carry_flag(&gb->registers);
@@ -426,11 +426,11 @@ void	cb_instr_rr_l(t_gameboy *gb)
 
 void	cb_instr_rr_hlp(t_gameboy *gb)
 {
-  unsigned char		res = fetch_byte(gb->memory.start + gb->registers.hl);
+  unsigned char		res = fetch_byte(gb, gb->registers.hl);
   bool			tail = (res & 0x01);
 
   res = (res >> 1) | (get_carry_flag(gb->registers.f) << 7);
-  write_byte(gb->memory.start + gb->registers.hl, res);
+  write_byte(gb, gb->registers.hl, res);
   set_if_zero(&gb->registers, res);
   unset_substract_flag(&gb->registers);
   unset_half_carry_flag(&gb->registers);
@@ -516,11 +516,11 @@ void	cb_instr_sla_l(t_gameboy *gb)
 
 void	cb_instr_sla_hlp(t_gameboy *gb)
 {
-  unsigned char		res = fetch_byte(gb->memory.start + gb->registers.hl);
+  unsigned char		res = fetch_byte(gb, gb->registers.hl);
   bool			head = IS_NEG(res);
 
   res = (res << 1);
-  write_byte(gb->memory.start + gb->registers.hl, res);
+  write_byte(gb, gb->registers.hl, res);
   set_if_zero(&gb->registers, res);
   unset_substract_flag(&gb->registers);
   unset_half_carry_flag(&gb->registers);
@@ -606,11 +606,11 @@ void	cb_instr_sra_l(t_gameboy *gb)
 
 void	cb_instr_sra_hlp(t_gameboy *gb)
 {
-  unsigned char		res = fetch_byte(gb->memory.start + gb->registers.hl);
+  unsigned char		res = fetch_byte(gb, gb->registers.hl);
   bool			tail = (res & 0x01);
 
   res = (res >> 1) | (IS_NEG(res) << 7);
-  write_byte(gb->memory.start + gb->registers.hl, res);
+  write_byte(gb, gb->registers.hl, res);
   set_if_zero(&gb->registers, res);
   unset_substract_flag(&gb->registers);
   unset_half_carry_flag(&gb->registers);
@@ -696,11 +696,11 @@ void	cb_instr_srl_l(t_gameboy *gb)
 
 void	cb_instr_srl_hlp(t_gameboy *gb)
 {
-  unsigned char		res = fetch_byte(gb->memory.start + gb->registers.hl);
+  unsigned char		res = fetch_byte(gb, gb->registers.hl);
   bool			tail = (res & 0x01);
 
   res = (res >> 1);
-  write_byte(gb->memory.start + gb->registers.hl, res);
+  write_byte(gb, gb->registers.hl, res);
   set_if_zero(&gb->registers, res);
   unset_substract_flag(&gb->registers);
   unset_half_carry_flag(&gb->registers);
@@ -758,7 +758,7 @@ void	cb_instr_bit_0_l(t_gameboy *gb)
 
 void	cb_instr_bit_0_hlp(t_gameboy *gb)
 {
-  set_if_zero(&gb->registers, fetch_byte(gb->memory.start + gb->registers.hl) & (1 << 0));
+  set_if_zero(&gb->registers, fetch_byte(gb, gb->registers.hl) & (1 << 0));
   unset_substract_flag(&gb->registers);
   set_half_carry_flag(&gb->registers);
 }
@@ -814,7 +814,7 @@ void	cb_instr_bit_1_l(t_gameboy *gb)
 
 void	cb_instr_bit_1_hlp(t_gameboy *gb)
 {
-  set_if_zero(&gb->registers, fetch_byte(gb->memory.start + gb->registers.hl) & (1 << 1));
+  set_if_zero(&gb->registers, fetch_byte(gb, gb->registers.hl) & (1 << 1));
   unset_substract_flag(&gb->registers);
   set_half_carry_flag(&gb->registers);
 }
@@ -870,7 +870,7 @@ void	cb_instr_bit_2_l(t_gameboy *gb)
 
 void	cb_instr_bit_2_hlp(t_gameboy *gb)
 {
-  set_if_zero(&gb->registers, fetch_byte(gb->memory.start + gb->registers.hl) & (1 << 2));
+  set_if_zero(&gb->registers, fetch_byte(gb, gb->registers.hl) & (1 << 2));
   unset_substract_flag(&gb->registers);
   set_half_carry_flag(&gb->registers);
 }
@@ -926,7 +926,7 @@ void	cb_instr_bit_3_l(t_gameboy *gb)
 
 void	cb_instr_bit_3_hlp(t_gameboy *gb)
 {
-  set_if_zero(&gb->registers, fetch_byte(gb->memory.start + gb->registers.hl) & (1 << 3));
+  set_if_zero(&gb->registers, fetch_byte(gb, gb->registers.hl) & (1 << 3));
   unset_substract_flag(&gb->registers);
   set_half_carry_flag(&gb->registers);
 }
@@ -982,7 +982,7 @@ void	cb_instr_bit_4_l(t_gameboy *gb)
 
 void	cb_instr_bit_4_hlp(t_gameboy *gb)
 {
-  set_if_zero(&gb->registers, fetch_byte(gb->memory.start + gb->registers.hl) & (1 << 4));
+  set_if_zero(&gb->registers, fetch_byte(gb, gb->registers.hl) & (1 << 4));
   unset_substract_flag(&gb->registers);
   set_half_carry_flag(&gb->registers);
 }
@@ -1038,7 +1038,7 @@ void	cb_instr_bit_5_l(t_gameboy *gb)
 
 void	cb_instr_bit_5_hlp(t_gameboy *gb)
 {
-  set_if_zero(&gb->registers, fetch_byte(gb->memory.start + gb->registers.hl) & (1 << 5));
+  set_if_zero(&gb->registers, fetch_byte(gb, gb->registers.hl) & (1 << 5));
   unset_substract_flag(&gb->registers);
   set_half_carry_flag(&gb->registers);
 }
@@ -1094,7 +1094,7 @@ void	cb_instr_bit_6_l(t_gameboy *gb)
 
 void	cb_instr_bit_6_hlp(t_gameboy *gb)
 {
-  set_if_zero(&gb->registers, fetch_byte(gb->memory.start + gb->registers.hl) & (1 << 6));
+  set_if_zero(&gb->registers, fetch_byte(gb, gb->registers.hl) & (1 << 6));
   unset_substract_flag(&gb->registers);
   set_half_carry_flag(&gb->registers);
 }
@@ -1150,7 +1150,7 @@ void	cb_instr_bit_7_l(t_gameboy *gb)
 
 void	cb_instr_bit_7_hlp(t_gameboy *gb)
 {
-  set_if_zero(&gb->registers, fetch_byte(gb->memory.start + gb->registers.hl) & (1 << 7));
+  set_if_zero(&gb->registers, fetch_byte(gb, gb->registers.hl) & (1 << 7));
   unset_substract_flag(&gb->registers);
   set_half_carry_flag(&gb->registers);
 }

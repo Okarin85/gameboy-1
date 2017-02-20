@@ -1,7 +1,7 @@
+#include <string.h>
 #include <stdlib.h>
 #include "gameboy.h"
 #include "errors.h"
-#include <string.h>
 
 static void	init_cartbridge(t_gameboy *gb)
 {

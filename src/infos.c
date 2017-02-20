@@ -55,28 +55,54 @@ void		print_header_infos(t_header *header)
 
 void		print_instruction_infos(t_gameboy *gb, unsigned char opcode)
 {
+  printf("%02hhX", opcode);
+
   if (g_instructions[opcode].instr_length == 0)
-    printf("%s", g_instructions[opcode].debug);
+    {
+      printf("    : ");
+      printf("%s", g_instructions[opcode].debug);
+    }
   else if (g_instructions[opcode].instr_length == 1)
-    printf(g_instructions[opcode].debug, gb->operand.len8);
+    {
+      printf("%02hhX  :", gb->instruction.op_len8);
+      printf(g_instructions[opcode].debug, gb->instruction.op_len8);
+    }
   else
-    printf(g_instructions[opcode].debug, gb->operand.len16);
+    {
+      printf("%02hhX%02hhX: ", (char)(gb->instruction.op_len16 & 0x00FF),
+	     (char)((gb->instruction.op_len16 & 0xFF00) >> 8));
+      printf(g_instructions[opcode].debug, gb->instruction.op_len16);
+    }
   printf("\n_________________________\n\n");
+}
+
+static void	print_flags(t_gameboy *gb)
+{
+  char		flags[] = "[ZSHC]\n";
+
+  if (!get_zero_flag(gb->registers.f))
+    flags[1] = '-';
+  if (!get_substract_flag(gb->registers.f))
+    flags[2] = '-';
+  if (!get_half_carry_flag(gb->registers.f))
+    flags[3] = '-';
+  if (!get_carry_flag(gb->registers.f))
+    flags[4] = '-';
+  printf("%s", flags);
 }
 
 void		print_registers(t_gameboy *gb)
 {
-  printf("AF = 0x%04X | A = 0x%02X | F = 0x%02X (Z = %u; S = %u; HF = %u; C = %u)\n",
-	 gb->registers.af, gb->registers.a, gb->registers.f,
-	 get_zero_flag(gb->registers.f), get_substract_flag(gb->registers.f),
-	 get_half_carry_flag(gb->registers.f), get_carry_flag(gb->registers.f));
-  printf("BC = 0x%04X | B = 0x%02X | C = 0x%02X\n",
-	 gb->registers.bc, gb->registers.b, gb->registers.c);
-  printf("DE = 0x%04X | D = 0x%02X | E = 0x%02X\n",
-	 gb->registers.de, gb->registers.d, gb->registers.e);
-  printf("HL = 0x%04X | H = 0x%02X | L = 0x%02X\n",
-	 gb->registers.hl, gb->registers.h, gb->registers.l);
-  printf("SP = 0x%04X\n", gb->registers.sp);
-  printf("PC = 0x%04X\n", gb->registers.pc);
+  printf("A: 0x%02hhX F: 0x%02hhX (AF: 0x%04hX)\n",
+	 gb->registers.a, gb->registers.f, gb->registers.af);
+  printf("B: 0x%02hhX C: 0x%02hhX (BC: 0x%04hX)\n",
+	 gb->registers.b, gb->registers.c, gb->registers.bc);
+  printf("D: 0x%02hhX E: 0x%02hhX (DE: 0x%04hX)\n",
+	 gb->registers.d, gb->registers.e, gb->registers.de);
+  printf("H: 0x%02hhX L: 0x%02hhX (HL: 0x%04hX)\n",
+	 gb->registers.h, gb->registers.l, gb->registers.hl);
+  printf("SP: 0x%04hX\n", gb->registers.sp);
+  printf("PC: 0x%04hX\n", gb->registers.pc);
+  print_flags(gb);
   printf("_________________________\n\n");
 }

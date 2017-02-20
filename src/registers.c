@@ -103,8 +103,7 @@ void			init_hardware_registers(t_gameboy *gb)
 
 void			init_registers(t_gameboy *gb)
 {
-  gb->registers.af	= 0x0001;
-  gb->registers.f	= 0x00B0;
+  gb->registers.af	= 0x01B0;
   gb->registers.bc	= 0x0013;
   gb->registers.de	= 0x00D8;
   gb->registers.hl	= 0x014D;
@@ -123,9 +122,9 @@ void			set_if_carry(t_registers *registers, unsigned char a, unsigned char b, un
 void			set_if_zero(t_registers *registers, unsigned char value)
 {
   if (value)
-    set_zero_flag(registers);
-  else
     unset_zero_flag(registers);
+  else
+    set_zero_flag(registers);
 }
 
 void			set_if_half_carry(t_registers *registers, unsigned char a, unsigned char b)

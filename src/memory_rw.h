@@ -1,19 +1,20 @@
-#ifndef FETCH_H_
-# define FETCH_H_
+#ifndef MEMORY_RW_H_
+# define MEMORY_RW_H_
 
-static inline char	fetch_byte(void const *address)
-{
-  return (*((char *)address));
-}
+typedef struct s_memory		t_memory;
+typedef struct s_gameboy	t_gameboy;
 
-unsigned short	fetch_word(void const *address);
-unsigned short	inverted_fetch_word(void const *address);
+char		fetch_byte(t_gameboy *gb, unsigned short address);
+unsigned short	fetch_word(t_gameboy *gb, unsigned short address);
 
-static inline void	write_byte(void *address, unsigned char value)
-{
-  *(unsigned char *)address = value;
-}
+void		write_byte(t_gameboy *gb, unsigned short address, unsigned char value);
+void		write_word(t_gameboy *gb, unsigned short address, unsigned short value);
 
-void		write_word(void *address, unsigned short value);
+void		load_memory(t_memory *memory);
 
-#endif /* !FETCH_H_ */
+unsigned char	pop_byte(t_gameboy *gb);
+unsigned short	pop_word(t_gameboy *gb);
+void		push_byte(t_gameboy *gb, unsigned char value);
+void		push_word(t_gameboy *gb, unsigned short value);
+
+#endif /* !MEMORY_RW_H_ */

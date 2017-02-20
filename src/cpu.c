@@ -4,38 +4,28 @@
 #include "instructions.h"
 #include "memory_rw.h"
 
-static void	get_operand(t_gameboy *gb, unsigned char opcode)
+static void	get_operand(t_gameboy *gb)
 {
-  if (g_instructions[opcode].instr_length == 1)
-    {
-      gb->operand.len8 = fetch_byte(gb->memory.start + gb->registers.pc);
-      gb->registers.pc += 1;
-    }
-  else if (g_instructions[opcode].instr_length == 2)
-    {
-      gb->operand.len16 = fetch_word(gb->memory.start + gb->registers.pc);
-      gb->registers.pc += 2;
-    }
+  if (g_instructions[gb->instruction.opcode].instr_length == 1)
+    gb->instruction.op_len8 = fetch_byte(gb, gb->registers.pc);
+  else if (g_instructions[gb->instruction.opcode].instr_length == 2)
+    gb->instruction.op_len16 = fetch_word(gb, gb->registers.pc);
 }
 
 void				cpu_step(t_gameboy *gb)
 {
-  unsigned char			opcode;
-  static unsigned long long	instr_number = 0;
-
-  opcode = gb->memory.start[gb->registers.pc];
-  gb->registers.pc += 1;
-  get_operand(gb, opcode);
-  ++instr_number;
-  print_registers(gb);
-  if (g_instructions[opcode].nb_cycles != 0)
+  /*print_registers(gb);*/
+  gb->instruction.opcode = gb->memory.start[gb->registers.pc];
+  gb->instruction.cycles = g_instructions[gb->instruction.opcode].nb_cycles;
+  get_operand(gb);
+  gb->registers.pc += g_instructions[gb->instruction.opcode].instr_length + 1;
+  if (g_instructions[gb->instruction.opcode].nb_cycles != 0)
     {
-      print_instruction_infos(gb, opcode);
-      (g_instructions[opcode].func)(gb);
+      /*print_instruction_infos(gb, gb->instruction.opcode);*/
+      (g_instructions[gb->instruction.opcode].func)(gb);
     }
   else
     {
-      fprintf(stderr, "Unimplemented instruction %02X !\n", opcode);
-      fprintf(stderr, "%llu\nn", instr_number);
+      fprintf(stderr, "Unimplemented instruction %02X !\n", gb->instruction.opcode);
     }
 }
