@@ -1,6 +1,8 @@
 #ifndef GPU_H_
 # define GPU_H_
 
+# include <SDL/SDL.h>
+
 enum e_lcdc
 {
   LCDC_LCD_ENABLE = 1 << 7,
@@ -13,8 +15,17 @@ enum e_lcdc
   LCDC_BG_DISPLAY = 1 << 0,
 };
 
+typedef struct	s_gpu
+{
+  unsigned	width;
+  unsigned	height;
+  uint8_t	*pixels;
+  SDL_Surface	*screen;
+}		t_gpu;
+
 typedef struct s_gameboy	t_gameboy;
 
+bool		init_gpu(t_gameboy *gb);
 void		gpu_step(t_gameboy *gb);
 
 #endif /* !GPU_H_ */

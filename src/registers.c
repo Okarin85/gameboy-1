@@ -145,7 +145,7 @@ void			set_if_no_borrow_carry(t_registers *registers, unsigned char a, unsigned 
 
 void			set_if_no_borrow_half_carry(t_registers *registers, unsigned char a, unsigned char b)
 {
-  if ((a & 0x0F) < (b & 0x0F))
+  if ((char)((a & 0x0F) - (b & 0x0F)) > 0)
     set_half_carry_flag(registers);
   else
     unset_half_carry_flag(registers);

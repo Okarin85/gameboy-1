@@ -6,6 +6,7 @@ set (PROJECT ege)
 # Project.
 project(${PROJECT})
 
+
 # Set up the output path.
 set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR})
 
@@ -27,7 +28,11 @@ file (
 set (HDRS "${CMAKE_SOURCE_DIR}/include/")
 
 # Headers.
-include_directories(${HDRS})
+include_directories(${HDRS} ${SDL_INCLUDE_DIRS})
+
+Find_Package ( SDL 1.2.15 )
 
 # Executable.
 add_executable(${PROJECT} ${SRCS})
+
+TARGET_LINK_LIBRARIES(${PROJECT} ${SDL_LIBRARY})

@@ -1,6 +1,7 @@
 #ifndef MEMORY_H_
 # define MEMORY_H_
 
+# include <stdint.h>
 # define MEMORY_SIZE	0x10000
 # define L_ENDIAN
 
@@ -29,36 +30,36 @@ enum			e_memory_map_indexes {
 
 typedef struct		s_cartbridge
 {
-  char			*rst_iv;
-  char			*header;
-  char			*rom_bank_0;
-  char			*rom_banks;
+  uint8_t		*rst_iv;
+  uint8_t		*header;
+  uint8_t		*rom_bank_0;
+  uint8_t		*rom_banks;
 }			t_cartbridge;
 
 typedef struct		s_vram
 {
-  char			*character_ram;
-  char			*bg_map_1;
-  char			*bg_map_2;
+  uint8_t		*character_ram;
+  uint8_t		*bg_map_1;
+  uint8_t		*bg_map_2;
 }			t_vram;
 
 typedef struct		s_ram
 {
-  char			*cb;
-  char			*internal;
-  char			*echo;
-  char			*oam;
-  char			*high;
+  uint8_t		*cb;
+  uint8_t		*internal;
+  uint8_t		*echo;
+  uint8_t		*oam;
+  uint8_t		*high;
 }			t_ram;
 
 typedef struct		s_memory
 {
-  char			*start;
+  uint8_t		*start;
   t_cartbridge		cb;
   t_vram		vram;
   t_ram			ram;
-  char			*io;
-  char			*interupt;
+  uint8_t		*io;
+  uint8_t		*interupt;
 }			t_memory;
 
 int			init_memory(t_gameboy *gb);

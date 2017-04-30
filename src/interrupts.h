@@ -1,8 +1,19 @@
 #ifndef INTERRUPTS_H_
 # define INTERRUPTS_H_
 
-# include <stdlib.h>
 # include <stdbool.h>
+
+#define ask_interrupt(interrupt_name, value)				\
+static inline void ask_##interrupt_name##_interrupt(uint8_t *_if)		\
+{									\
+*_if |= (1 << value);							\
+}
+
+ask_interrupt(vblank, 0)
+ask_interrupt(lcd_stat, 1)
+ask_interrupt(timer, 2)
+ask_interrupt(serial, 3)
+ask_interrupt(joypad, 4)
 
 enum			e_interrupts_state {
     ENABLED		= (1 << 1),

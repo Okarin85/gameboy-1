@@ -13,14 +13,14 @@ static void	init_cartbridge(t_gameboy *gb)
   memcpy(gb->memory.start, gb->rom.start, 0x8000);
 }
 
-static void	init_vram(char *start, t_vram *vram)
+static void	init_vram(uint8_t *start, t_vram *vram)
 {
   vram->character_ram = start + CHARACTER_RAM_INDEX;
   vram->bg_map_1 = start + BG_MAP_1_INDEX;
   vram->bg_map_2 = start + BG_MAP_2_INDEX;
 }
 
-static void	init_ram(char *start, t_ram *ram)
+static void	init_ram(uint8_t *start, t_ram *ram)
 {
   ram->cb = start + CARTBRIDGE_RAM_INDEX;
   ram->internal = start + INTERNAL_RAM_INDEX;
@@ -37,7 +37,7 @@ int		init_memory(t_gameboy *gb)
   init_cartbridge(gb);
   init_vram(gb->memory.start, &gb->memory.vram);
   init_ram(gb->memory.start, &gb->memory.ram);
-  gb->memory.io = (char *)IO_REGISTERS_INDEX;
-  gb->memory.interupt = (char *)INTERRUPT_ENABLE_INDEX;
+  gb->memory.io = (uint8_t *)IO_REGISTERS_INDEX;
+  gb->memory.interupt = (uint8_t *)INTERRUPT_ENABLE_INDEX;
   return (0);
 }

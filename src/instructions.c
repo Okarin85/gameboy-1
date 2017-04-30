@@ -1739,7 +1739,7 @@ void	instr_call_a16(t_gameboy *gb)
 {
   unsigned short	addr = gb->instruction.op_len16;
 
-  push_word(gb, gb->registers.sp);
+  push_word(gb, gb->registers.pc);
   gb->registers.pc = addr;
 }
 
@@ -1749,7 +1749,7 @@ void	instr_call_nz_a16(t_gameboy *gb)
     return ;
   unsigned short	addr = gb->instruction.op_len16;
 
-  push_word(gb, gb->registers.sp);
+  push_word(gb, gb->registers.pc);
   gb->registers.pc = addr;
 }
 
@@ -1759,7 +1759,7 @@ void	instr_call_z_a16(t_gameboy *gb)
     return ;
   unsigned short	addr = gb->instruction.op_len16;
 
-  push_word(gb, gb->registers.sp);
+  push_word(gb, gb->registers.pc);
   gb->registers.pc = addr;
 }
 
@@ -1769,7 +1769,7 @@ void	instr_call_nc_a16(t_gameboy *gb)
     return ;
   unsigned short	addr = gb->instruction.op_len16;
 
-  push_word(gb, gb->registers.sp);
+  push_word(gb, gb->registers.pc);
   gb->registers.pc = addr;
 }
 
@@ -1779,13 +1779,13 @@ void	instr_call_c_a16(t_gameboy *gb)
     return ;
   unsigned short	addr = gb->instruction.op_len16;
 
-  push_word(gb, gb->registers.sp);
+  push_word(gb, gb->registers.pc);
   gb->registers.pc = addr;
 }
 
 void	rst_base(t_gameboy *gb, unsigned short value)
 {
-  push_word(gb, gb->registers.sp);
+  push_word(gb, gb->registers.pc);
   gb->registers.pc = value;
 }
 
@@ -1860,8 +1860,7 @@ void	instr_ret_c(t_gameboy *gb)
 
 void	instr_reti(t_gameboy *gb)
 {
-  if (get_carry_flag(gb->registers.f))
-    gb->registers.pc = pop_word(gb);
+  gb->registers.pc = pop_word(gb);
   gb->interrupts.master = true;
 }
 

@@ -1,6 +1,8 @@
 #ifndef CPU_H_
 #define CPU_H_
 
+# define GB_CPU_FREQUENCY 4194304
+
 typedef struct s_gameboy	t_gameboy;
 
 typedef struct	s_fetched

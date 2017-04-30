@@ -6,6 +6,9 @@
 # include "rom.h"
 # include "interrupts.h"
 # include "memory.h"
+# include "timing.h"
+# include "timer.h"
+# include "gpu.h"
 
 typedef struct		s_file
 {
@@ -35,7 +38,10 @@ typedef struct		s_gameboy
   t_fetched		instruction;
   t_keys		keys;
   t_interrupts		interrupts;
-  unsigned		ticks;
+  t_timing		timing;
+  t_timer		timer;
+  t_gpu			gpu;
+  bool			stop;
 }			t_gameboy;
 
 int		init_gameboy(t_gameboy *gb);

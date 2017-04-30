@@ -47,3 +47,4 @@ test_roms
 vgcore.*
 peda-*
 .ycm_extra_conf*
+tmp/
