@@ -17,6 +17,7 @@ enum e_lcdc
 
 typedef struct	s_gpu
 {
+  uint8_t	palette[4];
   unsigned	width;
   unsigned	height;
   uint8_t	*pixels;
