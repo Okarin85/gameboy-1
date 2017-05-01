@@ -31,30 +31,32 @@ int		run_gameboy(t_gameboy *gb)
   gb->timing.last = res.tv_nsec;
   while (!gb->stop)
     {
-      if (start || gb->registers.pc == 0x29A) {
-	  print_registers(gb);
-	  /*start = 1;*/
+      /*if (start || gb->instruction.opcode == 0xFB) {*/
+      if (start || gb->registers.pc == 0x319) {
+          print_registers(gb);
+          dump_background_tile_map(gb);
+          start = 1;
       }
-
       cpu_step(gb);
 
       if (start) {
-	  print_instruction_infos(gb, gb->instruction.opcode);
+          print_instruction_infos(gb, gb->instruction.opcode);
       }
 
       tick += gb->instruction.cycles;
       if (tick > GB_CPU_FREQUENCY) {
 	  tick = 0;
+          dump_background_tile_map(gb);
       }
       interrupts_step(gb);
       gpu_step(gb);
       timer_step(gb);
       timing(gb);
       if (start)
-	{
-	  char		useless[1];
-	  read(0, useless, 1);
-	}
+        {
+          char		useless[1];
+          read(0, useless, 1);
+        }
     }
   return (0);
 }

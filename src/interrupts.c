@@ -44,13 +44,16 @@ void		interrupts_step(t_gameboy *gb)
 
   if (!(gb->interrupts.master && ints))
     return ;
+  printf("BITE\n");
 
   for (unsigned i = 0; i < (sizeof(interrupts) / sizeof(interrupts[0])); ++i)
     {
       if (ints & (1 << i))
 	{
-	  printf("INterrupts\n");
+	  printf("Interrupt !\n");
+	  printf("if = %d !\n", *gb->hregisters._if);
 	  *gb->hregisters._if &= (0xFF ^ (1 << i));
+	  printf("aif = %d !\n", *gb->hregisters._if);
 	  gb->interrupts.master = false;
 	  push_word(gb, gb->registers.pc);
 	  gb->registers.pc = interrupts[i].address;

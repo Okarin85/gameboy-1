@@ -16,7 +16,7 @@ enum			e_memory_map_indexes {
     VRAM_INDEX			= 0x8000,
     CHARACTER_RAM_INDEX		= VRAM_INDEX,
     BG_MAP_1_INDEX		= 0x9800,
-    BG_MAP_2_INDEX		= 0x9800,
+    BG_MAP_2_INDEX		= 0x9C00,
     RAM_INDEX			= 0xA000,
     CARTBRIDGE_RAM_INDEX	= RAM_INDEX,
     INTERNAL_RAM_INDEX		= 0xC000,
